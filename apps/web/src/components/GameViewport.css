@@ -1,0 +1,16 @@
+.game-stage {
+  position: relative;
+  flex: none;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgb(8 27 32 / 24%);
+}
+
+.game-viewport {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 320px;
+  height: 640px;
+  overflow: hidden;
+  transform-origin: left top;
+  background: var(--color-paper);
+}

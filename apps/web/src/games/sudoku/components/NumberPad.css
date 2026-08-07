@@ -1,0 +1,32 @@
+.number-pad {
+  display: grid;
+  height: 52px;
+  grid-template-columns: repeat(9, 1fr);
+  align-items: center;
+  gap: 1px;
+  padding-top: 4px;
+}
+
+.number-pad button {
+  width: 31px;
+  height: 42px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  color: var(--color-blue-number);
+  background: transparent;
+  font-family: Georgia, serif;
+  font-size: 23px;
+  cursor: pointer;
+}
+
+.number-pad button:active {
+  color: white;
+  background: var(--color-teal);
+}
+
+.number-pad button:disabled {
+  color: #c1c7c4;
+  background: #f2f3f1;
+  cursor: default;
+}

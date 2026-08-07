@@ -1,0 +1,192 @@
+.difficulty-page {
+  position: relative;
+  height: 640px;
+  overflow: hidden;
+  padding: 36px 18px 16px;
+  background:
+    radial-gradient(circle at 86% 9%, rgb(255 255 255 / 70%) 0 44px, transparent 45px),
+    linear-gradient(175deg, #d7eff0 0 168px, var(--color-paper) 169px);
+}
+
+.difficulty-page__header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.difficulty-page__header button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  color: #254e48;
+  background: rgb(255 255 255 / 86%);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.difficulty-page__header div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.difficulty-page__header small {
+  color: #638079;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.difficulty-page__header h1 {
+  margin: 0;
+  color: #244f48;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.difficulty-page__intro {
+  width: 246px;
+  margin: 12px 0 12px 56px;
+  color: #637a75;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.difficulty-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.difficulty-card {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 78px;
+  grid-template-columns: 20px 42px 1fr 24px;
+  align-items: center;
+  gap: 10px;
+  overflow: hidden;
+  padding: 8px 10px;
+  border: 1px solid rgb(40 92 80 / 16%);
+  border-radius: 16px;
+  color: var(--color-ink);
+  background: rgb(255 255 255 / 84%);
+  box-shadow: 0 12px 28px rgb(35 61 52 / 7%);
+  text-align: left;
+  cursor: pointer;
+}
+
+.difficulty-card:active { transform: translateY(1px); }
+
+.difficulty-card__number {
+  align-self: start;
+  color: #9aaaa4;
+  font-family: Georgia, serif;
+  font-size: 9px;
+}
+
+.difficulty-card__symbol {
+  position: relative;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 58%);
+  border-radius: 13px;
+  color: white;
+  background: linear-gradient(145deg, #7bb8ad, #57968b);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 30%),
+    0 7px 15px rgb(58 118 106 / 18%);
+}
+
+.difficulty-card__symbol::after {
+  position: absolute;
+  top: -16px;
+  right: -13px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 12%);
+  content: "";
+}
+
+.difficulty-card--medium .difficulty-card__symbol {
+  background: linear-gradient(145deg, #3d9287, #276d65);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 28%), 0 7px 15px rgb(39 109 101 / 21%);
+}
+
+.difficulty-card--hard .difficulty-card__symbol {
+  background: linear-gradient(145deg, #315f6d, #1f4854);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 24%), 0 7px 15px rgb(31 72 84 / 23%);
+}
+
+.difficulty-card__copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.difficulty-card__copy small {
+  color: #82918c;
+  font-size: 7px;
+  letter-spacing: 0.09em;
+}
+
+.difficulty-card__copy strong {
+  margin-top: 1px;
+  color: #294f48;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.difficulty-card__copy span {
+  margin-top: 2px;
+  color: #6f7e7a;
+  font-size: 8px;
+  line-height: 1.25;
+}
+
+.difficulty-card__copy b {
+  margin-top: 2px;
+  color: #3d766c;
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.difficulty-card__arrow {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #d7e2de;
+  border-radius: 50%;
+  color: #4c766e;
+  background: #f7faf8;
+  transition: color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.difficulty-card:hover .difficulty-card__arrow {
+  color: white;
+  background: var(--color-teal);
+  transform: translateX(2px);
+}
+
+.difficulty-page__note {
+  margin: 8px 0 0;
+  color: #788782;
+  font-size: 8px;
+  text-align: center;
+}
+
+.difficulty-page__note span {
+  display: inline-grid;
+  place-items: center;
+  vertical-align: -2px;
+  color: var(--color-teal);
+  font-weight: 800;
+}

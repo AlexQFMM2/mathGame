@@ -6,7 +6,7 @@ MathGame 是一个离线优先、没有广告的数学小游戏集合。
 
 ## 当前状态
 
-项目处于基础框架阶段：
+Web 端数独 MVP 已经可以完整游玩：
 
 - [x] pnpm workspace
 - [x] React + TypeScript + Vite Web 基座
@@ -14,12 +14,18 @@ MathGame 是一个离线优先、没有广告的数学小游戏集合。
 - [x] 通用游戏目录 `game-core`
 - [x] 独立数独领域包 `sudoku-core`
 - [x] Capacitor Android 包装配置
-- [ ] 数独棋盘与输入交互
-- [ ] 候选数、求解、唯一解和可解释提示
-- [ ] 本地存档、计时、撤销与结算
+- [x] 数独棋盘、严格输入、笔记、撤销与擦除
+- [x] 候选数、求解、唯一解生成和基础可解释提示
+- [x] 三档难度选择、计时、暂停、本地存档恢复与结算
+- [x] Web 端从主页到完成一局的完整流程
+- [x] 首页 / 日历 / 我的底部导航与本地个人统计
+- [x] 按游戏类型生成每日任务，支持历史日期补打卡并参与自然月全勤奖杯
+- [x] 结算页复制题目编号，并通过编号再次挑战同一道数独
 - [ ] Android 真机触觉反馈和生命周期验收
 
-当前首页只是用来验证工程、视觉基线和竖屏缩放，不代表最终产品 UI。
+当前 Web 主流程为：主页 → 数独 → 选择难度 → 本机生成唯一解题目 → 游戏 → 结算。结算页可以复制题目种子，在数独难度选择页通过“按种子进入”，用原难度与 seed 重新生成完全相同的题目。
+
+日历按已上线游戏生成每日任务，每种游戏一天一条。点击今天的“打卡”或过去日期的“补签”会进入对应任务游戏，只有完整完成游戏后才记录任务完成与签到成功；选择日期本身不会改写记录。自然月每天都完成签到后点亮全勤奖杯，按当月实际完成的补签任务次数分为金色（0–4 次）、银色（5–14 次）和铜色（15 次以上）。任务目标会随未完成棋局一同保留，刷新或退出后继续游戏仍记到原日期。
 
 ## 技术栈
 
@@ -61,6 +67,7 @@ mathGame/
 └── plan/
     ├── README.md            计划索引和维护规则
     └── current/
+        ├── profile-daily-challenge-plan.md
         └── sudoku-mvp-plan.md
 ```
 
@@ -85,6 +92,12 @@ http://127.0.0.1:5180
 pnpm typecheck
 pnpm build
 pnpm test
+```
+
+开发环境需要单独检查复杂 UI 组件时，可打开：
+
+```text
+http://127.0.0.1:5180/?preview=1
 ```
 
 ## Android
@@ -123,18 +136,16 @@ Android 工程生成后需要锁定竖屏。应用 ID `com.mathgame.app` 目前�
 
 - [架构说明](docs/architecture.md)
 - [计划索引](plan/README.md)
+- [每日任务、个人中心与编号挑战计划](plan/current/profile-daily-challenge-plan.md)
 - [数独 MVP 计划](plan/current/sudoku-mvp-plan.md)
 
-## 创建 GitHub 仓库后
+## Git 仓库
 
-本目录目前不主动绑定远端。GitHub 仓库创建后，可在本目录执行：
+项目使用 `main` 分支，远端为 `git@github.com:AlexQFMM2/mathGame.git`。日常提交与推送：
 
 ```bash
-git init
 git add .
-git commit -m "chore: bootstrap MathGame workspace"
-git branch -M main
-git remote add origin <your-repository-url>
+git commit -m "feat: describe the change"
 git push -u origin main
 ```
 

@@ -4,7 +4,12 @@
 
 ## Current
 
-- [`current/sudoku-mvp-plan.md`](current/sudoku-mvp-plan.md)：第一个可完整游玩的数独版本。
+- [`current/profile-daily-challenge-plan.md`](current/profile-daily-challenge-plan.md)：每日任务、个人中心和题目编号复制/复现。
+
+## Archive
+
+- [`archive/sudoku-mvp-plan.md`](archive/sudoku-mvp-plan.md)：已完成并结束的 Web 数独 MVP；Android 发布范围留待独立计划。
+- [`archive/activity-calendar-plan.md`](archive/activity-calendar-plan.md)：已被当前每日任务方案取代的早期活动日历计划。
 
 ## 计划维护规则
 
@@ -13,4 +18,3 @@
 - 被替代的计划以后移动到 `archive/`，不要让多个 current 文档描述同一条主线。
 - 新小游戏必须有自己的计划，不直接塞进数独计划。
 - 技术实现和产品规则冲突时，以最新确认的产品规则为准，并同步修改文档。
-

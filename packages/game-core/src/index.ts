@@ -19,7 +19,6 @@ export const GAME_CATALOG: readonly GameDescriptor[] = [
     id: "sudoku",
     title: "数独",
     subtitle: "从候选数中找到唯一答案",
-    status: "coming-soon",
+    status: "available",
   },
 ];
-

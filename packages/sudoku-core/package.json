@@ -7,10 +7,10 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test src/index.test.mjs"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
   }
 }
-

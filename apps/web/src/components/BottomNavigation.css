@@ -1,0 +1,44 @@
+.bottom-navigation {
+  position: absolute;
+  z-index: 15;
+  right: 16px;
+  bottom: 12px;
+  left: 16px;
+  display: grid;
+  height: 56px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid rgb(44 99 90 / 17%);
+  border-radius: 18px;
+  background: rgb(255 254 250 / 93%);
+  box-shadow: 0 12px 30px rgb(27 66 59 / 18%);
+  backdrop-filter: blur(8px);
+}
+
+.bottom-navigation button {
+  display: flex;
+  min-width: 0;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 0;
+  border-radius: 13px;
+  color: #7b8985;
+  background: transparent;
+  font-size: 9px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.bottom-navigation button:active {
+  transform: translateY(1px);
+}
+
+.bottom-navigation .bottom-navigation__item--active {
+  color: white;
+  background: linear-gradient(145deg, #3d8b80, #286d65);
+  box-shadow: 0 5px 12px rgb(40 109 101 / 20%);
+}

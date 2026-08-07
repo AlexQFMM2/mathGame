@@ -1,5 +1,6 @@
 import {GAME_VIEWPORT} from "@math-game/game-core";
 import {useEffect, useState, type PropsWithChildren} from "react";
+import "./GameViewport.css";
 
 function availableViewport() {
   return {
@@ -49,4 +50,3 @@ export function GameViewport({children}: PropsWithChildren) {
     </main>
   );
 }
-

@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5180",
     "build": "tsc -p tsconfig.json --noEmit && vite build",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test src/games/sudoku/state/session.test.mjs src/features/activity/activity.test.mjs"
   },
   "dependencies": {
     "@math-game/game-core": "workspace:*",
@@ -22,4 +23,3 @@
     "vite": "^7.0.0"
   }
 }
-

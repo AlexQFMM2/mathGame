@@ -1,0 +1,77 @@
+.generating-page {
+  display: flex;
+  height: 640px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 18% 16%, rgb(255 255 255 / 42%) 0 42px, transparent 43px),
+    radial-gradient(circle at 88% 82%, rgb(255 255 255 / 32%) 0 64px, transparent 65px),
+    var(--color-sky);
+}
+
+.generating-page__grid {
+  display: grid;
+  width: 92px;
+  height: 92px;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  border: 2px solid #285b57;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 14px 34px rgb(28 77 74 / 18%);
+  animation: generating-page-float 1.7s ease-in-out infinite alternate;
+}
+
+.generating-page__grid span {
+  display: grid;
+  place-items: center;
+  border-right: 1px solid #a8c5c0;
+  border-bottom: 1px solid #a8c5c0;
+  color: var(--color-teal);
+  font-family: Georgia, serif;
+  font-size: 14px;
+}
+
+.generating-page small {
+  margin-top: 28px;
+  color: #52766f;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.generating-page h1 {
+  margin: 6px 0 0;
+  color: #224c47;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 25px;
+  font-weight: 500;
+}
+
+.generating-page p {
+  margin: 10px 0 0;
+  color: #52716c;
+  font-size: 10px;
+}
+
+.generating-page__progress {
+  width: 118px;
+  height: 3px;
+  margin-top: 18px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 50%);
+}
+
+.generating-page__progress i {
+  display: block;
+  width: 54%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-teal);
+  animation: generating-page-progress 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes generating-page-float { to { transform: translateY(-5px); } }
+@keyframes generating-page-progress { from { transform: translateX(-80%); } to { transform: translateX(160%); } }

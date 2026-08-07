@@ -1,0 +1,139 @@
+.seed-challenge-card {
+  height: 126px;
+  margin-top: 10px;
+  padding: 10px 11px 8px;
+  border: 1px solid rgb(40 92 80 / 17%);
+  border-radius: 17px;
+  background: rgb(255 255 255 / 88%);
+  box-shadow: 0 12px 28px rgb(35 61 52 / 7%);
+}
+
+.seed-challenge-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seed-challenge-card__header > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  color: #39776d;
+  background: #e1f0ed;
+}
+
+.seed-challenge-card__header div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.seed-challenge-card__header strong {
+  color: #294f48;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.seed-challenge-card__header small {
+  color: #81908b;
+  font-size: 7px;
+}
+
+.seed-challenge-card form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 78px;
+  gap: 7px;
+  margin-top: 7px;
+}
+
+.seed-challenge-card__field {
+  position: relative;
+  display: flex;
+  height: 40px;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px 38px 5px 9px;
+  border: 1px solid #d5e1dd;
+  border-radius: 11px;
+  background: #fbfdfb;
+}
+
+.seed-challenge-card__field:focus-within {
+  border-color: #55958a;
+  box-shadow: 0 0 0 2px rgb(61 139 128 / 10%);
+}
+
+.seed-challenge-card__field label {
+  color: #87958f;
+  font-size: 6px;
+}
+
+.seed-challenge-card__field input {
+  min-width: 0;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #315951;
+  background: transparent;
+  font-family: Georgia, serif;
+  font-size: 9px;
+  letter-spacing: 0.03em;
+}
+
+.seed-challenge-card__field input::placeholder { color: #aeb9b5; }
+
+.seed-challenge-card__clear {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 0;
+  color: #83928d;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.seed-challenge-card__submit {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 0;
+  border-radius: 11px;
+  color: white;
+  background: linear-gradient(145deg, #3d8b80, #286d65);
+  font-size: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.seed-challenge-card__submit:disabled {
+  color: #9aa7a2;
+  background: #e2e8e5;
+  cursor: default;
+}
+
+.seed-challenge-card__message {
+  display: block;
+  height: 9px;
+  margin-top: 5px;
+  overflow: hidden;
+  color: #8b9894;
+  font-size: 6px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.seed-challenge-card__message--visible { color: #9b553e; }
