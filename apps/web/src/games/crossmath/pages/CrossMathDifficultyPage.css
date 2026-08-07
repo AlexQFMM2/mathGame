@@ -1,0 +1,21 @@
+.crossmath-difficulty-page { position: relative; height: 640px; overflow: hidden; padding: 27px 18px 12px; background: radial-gradient(circle at 91% 6%, rgb(255 255 255 / 58%) 0 46px, transparent 47px), linear-gradient(175deg, #d9eee8 0 150px, var(--color-paper) 151px); }
+.crossmath-difficulty-page > header { display: flex; align-items: center; gap: 12px; }
+.crossmath-difficulty-page > header > button { display: grid; width: 42px; height: 42px; place-items: center; border: 0; border-radius: 50%; color: #254e48; background: rgb(255 255 255 / 86%); }
+.crossmath-difficulty-page > header div { display: flex; flex-direction: column; gap: 1px; }
+.crossmath-difficulty-page > header small { color: #638079; font-size: 7px; letter-spacing: .12em; }
+.crossmath-difficulty-page > header h1 { margin: 0; color: #244f48; font-family: Georgia, "Noto Serif SC", serif; font-size: 22px; font-weight: 500; }
+.crossmath-difficulty-page__intro { margin: 9px 0 9px 54px; color: #637a75; font-size: 8px; }
+.crossmath-difficulty-list { display: flex; flex-direction: column; gap: 6px; }
+.crossmath-difficulty-card { display: grid; width: 100%; height: 66px; grid-template-columns: 17px 38px 1fr 49px; align-items: center; gap: 7px; padding: 7px 9px; border: 1px solid rgb(40 92 80 / 15%); border-radius: 14px; color: var(--color-ink); background: rgb(255 255 255 / 85%); box-shadow: 0 8px 20px rgb(35 61 52 / 6%); text-align: left; }
+.crossmath-difficulty-card__number { align-self: start; color: #9aaaa4; font-family: Georgia, serif; font-size: 8px; }
+.crossmath-difficulty-card__icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; color: white; background: linear-gradient(145deg, #8abbb0, #5c9589); }
+.crossmath-difficulty-card--easy .crossmath-difficulty-card__icon { background: linear-gradient(145deg, #61a99b, #397f73); }
+.crossmath-difficulty-card--normal .crossmath-difficulty-card__icon { background: linear-gradient(145deg, #527f82, #345e63); }
+.crossmath-difficulty-card--hard .crossmath-difficulty-card__icon { background: linear-gradient(145deg, #86694c, #5e4935); }
+.crossmath-difficulty-card__copy { display: flex; min-width: 0; flex-direction: column; }
+.crossmath-difficulty-card__copy small { color: #82918c; font-size: 6px; }
+.crossmath-difficulty-card__copy strong { color: #294f48; font-family: Georgia, "Noto Serif SC", serif; font-size: 14px; font-weight: 500; }
+.crossmath-difficulty-card__copy span { overflow: hidden; margin-top: 1px; color: #6f7e7a; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.crossmath-difficulty-card > b { color: #4a786f; font-size: 6px; font-weight: 700; text-align: right; }
+.crossmath-difficulty-page__note { display: flex; margin: 6px 0 0; align-items: center; justify-content: center; gap: 4px; color: #788782; font-size: 7px; }
+.crossmath-difficulty-page__note .app-icon { color: var(--color-teal); }

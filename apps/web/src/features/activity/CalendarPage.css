@@ -465,26 +465,7 @@ button.calendar-day:active { transform: translateY(1px); }
   font-size: 6px;
 }
 
-.daily-tasks > header button {
-  position: absolute;
-  top: 8px;
-  right: 9px;
-  width: 64px;
-  height: 40px;
-  border: 0;
-  border-radius: 11px;
-  color: white;
-  background: linear-gradient(145deg, #3d8b80, #286d65);
-  font-size: 8px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.daily-tasks > header button:disabled {
-  color: #98a7a2;
-  background: #e4eae7;
-  cursor: default;
-}
+.daily-tasks__state { flex: 0 0 auto; padding: 2px 6px; border-radius: 99px; color: #397268; background: #e5f1ed; font-size: 6px; }
 
 .daily-tasks > div {
   display: flex;
@@ -492,22 +473,29 @@ button.calendar-day:active { transform: translateY(1px); }
   gap: 5px;
   overflow-x: auto;
   scrollbar-width: none;
-  width: calc(100% - 72px);
+  width: 100%;
 }
 
 .daily-tasks > div::-webkit-scrollbar { display: none; }
 
-.daily-tasks > div > span {
+.daily-tasks > div > button {
   display: grid;
-  min-width: 124px;
+  min-width: 0;
+  flex: 1 1 0;
   grid-template-columns: 18px auto 1fr;
   align-items: center;
   gap: 4px;
   padding: 3px 6px;
+  border: 0;
   border-radius: 8px;
   color: #637872;
   background: #eef3f1;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
 }
+
+.daily-tasks > div > button:disabled { cursor: default; }
 
 .daily-tasks > div i {
   display: grid;

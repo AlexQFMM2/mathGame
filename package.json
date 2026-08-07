@@ -11,10 +11,10 @@
     "test": "pnpm -r --if-present test",
     "mobile:sync": "pnpm --filter @math-game/mobile cap:sync",
     "mobile:open": "pnpm --filter @math-game/mobile cap:open",
-    "mobile:android:debug": "pnpm --filter @math-game/mobile android:debug"
+    "mobile:android:debug": "pnpm --filter @math-game/mobile android:debug",
+    "mobile:android:github-release": "pnpm --filter @math-game/mobile android:github-release"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
   }
 }
-

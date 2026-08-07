@@ -3,7 +3,7 @@ export const GAME_VIEWPORT = {
   height: 640,
 } as const;
 
-export type GameId = "sudoku";
+export type GameId = "sudoku" | "crossmath";
 
 export type GameStatus = "available" | "coming-soon";
 
@@ -19,6 +19,12 @@ export const GAME_CATALOG: readonly GameDescriptor[] = [
     id: "sudoku",
     title: "数独",
     subtitle: "从候选数中找到唯一答案",
+    status: "available",
+  },
+  {
+    id: "crossmath",
+    title: "算术填字",
+    subtitle: "让横竖每条数学关系都成立",
     status: "available",
   },
 ];

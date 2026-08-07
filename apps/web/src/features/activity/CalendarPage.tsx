@@ -54,22 +54,18 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
   const selectedDateParts = selectedDateKey?.split("-").map(Number) ?? null;
   const selectedIsToday = selectedDateKey === todayKey;
   const selectedIsPast = selectedDateKey !== null && selectedDateKey < todayKey;
-  const taskToStart = selectedProgress?.tasks.find((task) => !task.completed)
-    ?? selectedProgress?.tasks[0]
-    ?? null;
   const actionLabel = selectedProgress?.isMakeup
     ? "已补签"
     : selectedProgress?.isCheckedIn
       ? "已打卡"
       : selectedIsToday
-        ? "打卡"
+        ? "任选一项"
         : selectedIsPast
-          ? "补签"
+          ? "任选一项"
           : "选择日期";
-  const actionDisabled = selectedProgress === null
-    || selectedProgress.isComplete
-    || taskToStart === null
-    || (!selectedIsToday && !selectedIsPast);
+  const canStartTask = selectedProgress !== null
+    && !selectedProgress.isComplete
+    && (selectedIsToday || selectedIsPast);
   const selectedTitle = selectedDateParts === null
     ? "选择日期"
     : selectedIsToday
@@ -82,8 +78,8 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
       : selectedProgress.isCheckedIn
         ? "这一天已完成打卡"
         : selectedIsToday
-          ? "进入任务游戏，完成后自动打卡"
-          : "进入任务游戏，完成后自动补签";
+          ? "任选下方一项，完成一局后自动打卡"
+          : "任选下方一项，完成一局后自动补签";
 
   const moveMonth = (offset: number) => {
     setViewedMonth(new Date(year, monthIndex + offset, 1));
@@ -91,12 +87,12 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
     setActionMessage("");
   };
 
-  const submitSelectedDay = () => {
-    if (selectedDateKey === null || taskToStart === null || actionDisabled) return;
+  const submitSelectedTask = (gameId: GameId) => {
+    if (selectedDateKey === null || !canStartTask) return;
     onStartCheckInTask(
       selectedDateKey,
       selectedIsToday ? "daily" : "makeup",
-      taskToStart.gameId,
+      gameId,
     );
     setActionMessage(`正在进入${selectedIsToday ? "今日" : "补签"}任务`);
   };
@@ -115,17 +111,25 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
       <article className={`daily-tasks${selectedProgress?.isComplete ? " daily-tasks--complete" : ""}`}>
         <header>
           <span><strong>{selectedTitle}</strong><small>{selectedHint}</small></span>
-          <button type="button" disabled={actionDisabled} onClick={submitSelectedDay}>{actionLabel}</button>
+          <b className="daily-tasks__state">{actionLabel}</b>
         </header>
         <div>
           {availableGames.map((game) => {
             const task = selectedProgress?.tasks.find((item) => item.gameId === game.id);
             return (
-              <span className={task?.completed ? "daily-task--complete" : ""} key={game.id}>
-                <i aria-hidden="true">{task?.completed ? <AppIcon name="check" size={9} /> : ""}</i>
+              <button className={task?.completed ? "daily-task--complete" : ""} type="button" disabled={!canStartTask} key={game.id} onClick={() => submitSelectedTask(game.id)}>
+                <i aria-hidden="true">{task?.completed ? <AppIcon name="check" size={9} /> : canStartTask ? <AppIcon name="play" size={8} /> : ""}</i>
                 <strong>{game.title}</strong>
-                <small>{selectedProgress === null ? "选择日期后查看" : task?.completed ? `已完成 ${task.completedGames} 局` : "尚未完成"}</small>
-              </span>
+                <small>{selectedProgress === null
+                  ? "选择日期后查看"
+                  : task?.completed
+                    ? `已完成 ${task.completedGames} 局`
+                    : selectedProgress.isComplete
+                      ? "本次未选择"
+                      : canStartTask
+                        ? "点击开始"
+                        : "尚未完成"}</small>
+              </button>
             );
           })}
         </div>
@@ -227,7 +231,7 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
 
       <footer className="calendar-page__legend">
         <span><i /> 打卡成功</span>
-        <span aria-live="polite">{actionMessage || "选日期后进入任务，完成才签到"}</span>
+        <span aria-live="polite">{actionMessage || "任选一项完成后签到"}</span>
       </footer>
     </section>
   );

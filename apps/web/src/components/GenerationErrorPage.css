@@ -1,0 +1,6 @@
+.generation-error-page { display: flex; height: 640px; align-items: center; flex-direction: column; justify-content: center; padding: 28px; color: #315b55; background: var(--color-paper); text-align: center; }
+.generation-error-page > span { display: grid; width: 58px; height: 58px; place-items: center; border: 1px solid #dbb69d; border-radius: 18px; color: #9a5d3d; background: #fff0e4; font-family: Georgia, serif; font-size: 28px; }
+.generation-error-page small { margin-top: 18px; color: #87938f; font-size: 8px; letter-spacing: .14em; }
+.generation-error-page h1 { margin: 6px 0 0; font-family: Georgia, "Noto Serif SC", serif; font-size: 24px; font-weight: 500; }
+.generation-error-page p { max-width: 230px; margin: 10px 0 24px; color: #6c7e79; font-size: 10px; line-height: 1.6; }
+.generation-error-page button { display: flex; width: 180px; height: 44px; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 13px; color: white; background: var(--color-teal); font-size: 10px; font-weight: 700; }

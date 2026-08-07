@@ -36,6 +36,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@math-game/crossmath-core':
+        specifier: workspace:*
+        version: link:../../packages/crossmath-core
       '@math-game/game-core':
         specifier: workspace:*
         version: link:../../packages/game-core
@@ -64,6 +67,12 @@ importers:
       vite:
         specifier: ^7.0.0
         version: 7.3.6(@types/node@24.13.3)
+
+  packages/crossmath-core:
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
 
   packages/game-core:
     devDependencies:

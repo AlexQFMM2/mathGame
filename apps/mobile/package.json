@@ -9,6 +9,7 @@
     "cap:sync": "pnpm run build:web && cap sync android",
     "cap:open": "cap open android",
     "android:debug": "pnpm run cap:sync && node scripts/run-gradle.mjs assembleDebug",
+    "android:github-release": "pnpm run cap:sync && node scripts/run-gradle.mjs assembleDebug",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -22,4 +23,3 @@
     "typescript": "^5.9.3"
   }
 }
-

@@ -2,11 +2,11 @@
 
 这个目录只负责把 `apps/web/dist` 包装成 Android 应用，不维护第二套 UI 或游戏逻辑。
 
-首次生成 Android 工程：
+Android 原生工程已经纳入仓库；首次安装依赖后可直接同步：
 
 ```bash
 pnpm install
-pnpm --filter @math-game/mobile cap:add:android
+pnpm mobile:sync
 ```
 
 同步 Web 构建并打开 Android Studio：
@@ -22,4 +22,11 @@ pnpm mobile:open
 pnpm mobile:android:debug
 ```
 
-生成 Android 工程后，需要在 `AndroidManifest.xml` 中锁定 portrait，并验证状态栏、安全区域、返回键、休眠恢复和 Haptics。正式发布前还要将临时的 `com.mathgame.app` 替换成最终应用 ID，并配置 release signing。
+GitHub Release 使用与 Pokémon 项目相同的首发策略：显式推送 `v*` tag 后，由 `.github/workflows/release-android.yml` 构建 debug-signed 可安装 APK，并作为 prerelease 资产发布。当前应用 ID 为 `com.alexqfmm.mathgame`，原生工程锁定 portrait。
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+debug 签名只用于当前直接安装测试；正式上架或需要长期覆盖升级前，必须配置独立 release signing，不能把密钥提交到仓库。

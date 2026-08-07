@@ -1,11 +1,12 @@
 import type {SudokuDigit} from "@math-game/sudoku-core";
 import {AppIcon} from "../../../components/AppIcon";
+import {GamePlayHeader} from "../../../components/GamePlayHeader";
+import {GamePauseOverlay} from "../../../components/GamePauseOverlay";
+import {formatElapsedTime} from "../../../components/formatElapsedTime";
 import {useEffect, useMemo, useReducer, useRef} from "react";
-import {GameHeader} from "../components/GameHeader";
 import {GameToolbar} from "../components/GameToolbar";
 import {HintDialog} from "../components/HintDialog";
 import {NumberPad} from "../components/NumberPad";
-import {PauseOverlay} from "../components/PauseOverlay";
 import {SudokuBoard} from "../components/SudokuBoard";
 import {
   SUDOKU_SAVE_KEY,
@@ -14,6 +15,7 @@ import {
   sudokuSessionReducer,
   type SudokuSession,
 } from "../state/session";
+import {DIFFICULTY_LABELS} from "./labels";
 import {localSaveStore} from "../../../platform/saveStore";
 import type {GameResult} from "./ResultPage";
 import "./SudokuGamePage.css";
@@ -52,6 +54,8 @@ export function SudokuGamePage({initialSession, onExit, onFinish}: SudokuGamePag
       errors: session.errors,
       hints: session.hints,
       puzzleId: session.puzzle.id,
+      puzzle: session.puzzle,
+      values: session.values,
     }), 420);
   }, [complete, onFinish, session]);
 
@@ -90,10 +94,11 @@ export function SudokuGamePage({initialSession, onExit, onFinish}: SudokuGamePag
     <section className={`sudoku-game-page${session.mistakeIndex !== null ? " sudoku-game-page--mistake" : ""}`}>
       <div className="sudoku-game-page__bubble sudoku-game-page__bubble--one" aria-hidden="true" />
       <div className="sudoku-game-page__bubble sudoku-game-page__bubble--two" aria-hidden="true" />
-      <GameHeader
-        difficulty={session.puzzle.difficulty}
+      <GamePlayHeader
+        gameTitle="数独"
+        difficultyLabel={DIFFICULTY_LABELS[session.puzzle.difficulty]}
         errors={session.errors}
-        elapsedSeconds={session.elapsedSeconds}
+        elapsedLabel={formatElapsedTime(session.elapsedSeconds)}
         onExit={exit}
         onPause={() => dispatch({type: "toggle-pause"})}
       />
@@ -129,7 +134,7 @@ export function SudokuGamePage({initialSession, onExit, onFinish}: SudokuGamePag
       </div>
 
       {session.mistakeIndex !== null && <p className="sudoku-game-page__error" role="status">这个数字与答案不符，再看看同行、同列和同宫。</p>}
-      {session.paused && <PauseOverlay onResume={() => dispatch({type: "toggle-pause"})} />}
+      {session.paused && <GamePauseOverlay onResume={() => dispatch({type: "toggle-pause"})} />}
       {session.pendingHint !== null && (
         <HintDialog
           hint={session.pendingHint}

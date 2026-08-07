@@ -1,0 +1,30 @@
+.crossmath-value-text {
+  display: inline-grid;
+  min-width: 0;
+  max-width: 100%;
+  place-items: center;
+  line-height: .95;
+  white-space: nowrap;
+}
+
+.crossmath-value-text--compact { font-size: .76em; }
+.crossmath-value-text--tiny { font-size: .62em; }
+
+.crossmath-value-text--fraction {
+  min-width: 1.45em;
+  grid-template-rows: 1fr 1fr;
+  font-size: .66em;
+  line-height: .82;
+}
+
+.crossmath-value-text--fraction span {
+  display: block;
+  min-width: 100%;
+  padding: 0 .08em;
+  text-align: center;
+}
+
+.crossmath-value-text--fraction span:last-child {
+  border-top: .11em solid currentcolor;
+  padding-top: .08em;
+}

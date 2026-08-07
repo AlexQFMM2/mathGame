@@ -1,0 +1,4 @@
+.crossmath-toolbar { position: relative; z-index: 2; display: grid; width: 212px; height: 47px; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.crossmath-toolbar button { display: flex; height: 44px; align-items: center; flex-direction: column; justify-content: center; gap: 2px; border: 1px solid rgb(59 106 98 / 16%); border-radius: 11px; color: #38675f; background: rgb(255 255 255 / 77%); }
+.crossmath-toolbar button:disabled { color: #abb7b3; background: rgb(238 242 240 / 70%); }
+.crossmath-toolbar small { font-size: 6px; }

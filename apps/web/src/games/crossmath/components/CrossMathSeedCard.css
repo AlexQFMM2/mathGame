@@ -1,0 +1,10 @@
+.crossmath-seed-card { display: grid; height: 82px; grid-template-columns: 32px 1fr; gap: 8px; margin-top: 8px; padding: 8px 9px; border: 1px solid rgb(48 96 87 / 15%); border-radius: 14px; background: rgb(255 255 255 / 80%); }
+.crossmath-seed-card > span { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 10px; color: #39776d; background: #e1f0ed; }
+.crossmath-seed-card form { display: flex; min-width: 0; flex-direction: column; }
+.crossmath-seed-card label { color: #496d66; font-family: Georgia, "Noto Serif SC", serif; font-size: 10px; }
+.crossmath-seed-card form > div { display: grid; grid-template-columns: 1fr 58px; gap: 5px; margin-top: 4px; }
+.crossmath-seed-card input { min-width: 0; height: 30px; padding: 0 8px; border: 1px solid #d1ddd9; border-radius: 8px; outline: none; color: #315951; background: #fbfdfb; font-family: Georgia, serif; font-size: 8px; text-transform: uppercase; }
+.crossmath-seed-card input:focus { border-color: #55958a; }
+.crossmath-seed-card button { height: 30px; border: 0; border-radius: 8px; color: white; background: var(--color-teal); font-size: 8px; font-weight: 700; }
+.crossmath-seed-card button:disabled { color: #9aa7a2; background: #e2e8e5; }
+.crossmath-seed-card small { height: 9px; margin-top: 3px; overflow: hidden; color: #8b9894; font-size: 6px; white-space: nowrap; }

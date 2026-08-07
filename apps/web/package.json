@@ -7,9 +7,10 @@
     "dev": "vite --host 127.0.0.1 --port 5180",
     "build": "tsc -p tsconfig.json --noEmit && vite build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test src/games/sudoku/state/session.test.mjs src/features/activity/activity.test.mjs"
+    "test": "node --test src/games/sudoku/state/session.test.mjs src/games/crossmath/state/session.test.mjs src/features/activity/activity.test.mjs"
   },
   "dependencies": {
+    "@math-game/crossmath-core": "workspace:*",
     "@math-game/game-core": "workspace:*",
     "@math-game/sudoku-core": "workspace:*",
     "react": "^19.0.0",

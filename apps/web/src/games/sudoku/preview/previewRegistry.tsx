@@ -67,6 +67,8 @@ export const SUDOKU_COMPONENT_PREVIEWS: readonly ComponentPreviewEntry[] = [
           errors: 0,
           hints: 1,
           puzzleId: previewPuzzle.id,
+          puzzle: previewPuzzle,
+          values: previewPuzzle.solution,
         }}
         onHome={() => undefined}
         onNewGame={() => undefined}

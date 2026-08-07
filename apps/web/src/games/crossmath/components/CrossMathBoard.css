@@ -1,0 +1,106 @@
+.crossmath-board {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: calc(var(--crossmath-board-columns) * var(--crossmath-cell-size) + 4px);
+  height: calc(var(--crossmath-board-rows) * var(--crossmath-cell-size) + 4px);
+  flex: 0 0 auto;
+  grid-template-columns: repeat(var(--crossmath-board-columns), var(--crossmath-cell-size));
+  grid-template-rows: repeat(var(--crossmath-board-rows), var(--crossmath-cell-size));
+  place-content: center;
+  border: 1px solid rgb(73 106 95 / 17%);
+  border-radius: 12px;
+  background: rgb(255 254 249 / 93%);
+  box-shadow: 0 12px 28px rgb(47 74 65 / 9%);
+}
+
+.crossmath-board--result {
+  box-shadow: 0 12px 30px rgb(24 91 79 / 17%);
+}
+
+.crossmath-board--result button { cursor: default; }
+
+.crossmath-board__value,
+.crossmath-board__variable,
+.crossmath-board__symbol,
+.crossmath-board__blocked {
+  position: relative;
+  display: grid;
+  width: var(--crossmath-cell-size);
+  height: var(--crossmath-cell-size);
+  place-items: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.crossmath-board__blocked { background: rgb(224 234 230 / 38%); }
+
+.crossmath-board__value {
+  border: 2px solid #c89f36;
+  color: #4b3510;
+  background: #ffe7a0;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: clamp(9px, calc(var(--crossmath-cell-size) * .33), 13px);
+  font-weight: 700;
+}
+
+button.crossmath-board__value { padding: 0; cursor: pointer; }
+.crossmath-board__value--fixed { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 45%); }
+.crossmath-board__value--slot {
+  border: 2px dashed #2c8c7a;
+  color: #14594d;
+  background: #fff;
+  box-shadow: inset 0 0 0 2px #e0f3ed;
+}
+.crossmath-board__value--slot:not(.crossmath-board__value--filled)::after {
+  width: 12px;
+  height: 3px;
+  border-radius: 99px;
+  background: #66a99c;
+  content: "";
+}
+.crossmath-board__value--filled {
+  border-style: solid;
+  border-color: #075e50;
+  color: #fff;
+  background: #16806e;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 24%), 0 2px 5px rgb(18 96 82 / 20%);
+}
+.crossmath-board__value i { position: absolute; color: #6c695b; font-family: Georgia, serif; font-size: 17px; font-style: normal; font-weight: 400; }
+.crossmath-board__value i:first-child { left: -2px; }
+.crossmath-board__value i:last-child { right: -2px; }
+
+.crossmath-board__symbol {
+  border: 1px solid #d3bd77;
+  color: #493b1d;
+  background: #fff5ca;
+  font-family: Georgia, "Noto Serif SC", serif;
+  font-size: clamp(11px, calc(var(--crossmath-cell-size) * .4), 16px);
+  font-weight: 700;
+}
+button.crossmath-board__symbol { padding: 0; cursor: pointer; }
+.crossmath-board__symbol--slot { border: 2px dashed #2c8c7a; background: #fff; }
+.crossmath-board__symbol--slot:not(.crossmath-board__symbol--filled)::after {
+  width: 9px;
+  height: 2px;
+  border-radius: 99px;
+  background: #66a99c;
+  content: "";
+}
+.crossmath-board__symbol--filled { border: 2px solid #075e50; color: #fff; background: #16806e; }
+
+.crossmath-board__variable {
+  border: 2px solid #6d62a8;
+  color: #3f347c;
+  background: #e8e3ff;
+  font-family: Georgia, serif;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 48%);
+}
+.crossmath-board__variable b { font-size: clamp(12px, calc(var(--crossmath-cell-size) * .43), 17px); font-style: italic; }
+.crossmath-board__variable small { position: absolute; right: 2px; bottom: 1px; color: #5c5195; font-size: 6px; }
+
+.crossmath-board__value--mistake,
+.crossmath-board__variable--mistake { z-index: 2; border-color: #bf5a4e; box-shadow: inset 0 0 0 1px #bf5a4e; }
+.crossmath-board__symbol--mistake { z-index: 2; border-color: #bf5a4e; color: #a43f35; box-shadow: inset 0 0 0 1px #bf5a4e; }
+.crossmath-board__value--hint,
+.crossmath-board__variable--hint { z-index: 3; box-shadow: inset 0 0 0 2px #d59d32, 0 0 0 2px rgb(255 242 189 / 70%); }
+.crossmath-board__symbol--hint { color: #b67e18; }

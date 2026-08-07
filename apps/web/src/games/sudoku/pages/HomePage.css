@@ -66,7 +66,7 @@
 }
 
 .home-page__content {
-  margin-top: 46px;
+  margin-top: 26px;
 }
 
 .home-page__section-title {
@@ -89,11 +89,11 @@
 .resume-card {
   display: grid;
   width: 100%;
-  min-height: 54px;
+  min-height: 48px;
   grid-template-columns: 36px 1fr auto;
   align-items: center;
   gap: 10px;
-  margin: -20px 0 22px;
+  margin: 0;
   padding: 8px 11px;
   border: 1px solid rgb(46 117 106 / 16%);
   border-radius: 13px;
@@ -101,6 +101,8 @@
   background: rgb(255 255 255 / 70%);
   text-align: left;
 }
+
+.resume-list { display: flex; margin: -10px 0 12px; flex-direction: column; gap: 5px; }
 
 .resume-card__icon {
   display: grid;
@@ -133,14 +135,14 @@
   font-size: 9px;
 }
 
-.sudoku-card {
+.game-card {
   display: grid;
   width: 100%;
-  min-height: 112px;
-  grid-template-columns: 74px 1fr 28px;
+  min-height: 88px;
+  grid-template-columns: 62px 1fr 28px;
   align-items: center;
   gap: 13px;
-  padding: 14px;
+  padding: 10px;
   border: 1px solid rgb(40 92 80 / 20%);
   border-radius: 18px;
   color: inherit;
@@ -150,14 +152,15 @@
   cursor: pointer;
 }
 
-.sudoku-card:active {
+.game-card + .game-card { margin-top: 8px; }
+.game-card:active {
   transform: translateY(1px);
 }
 
 .sudoku-card__grid {
   display: grid;
-  width: 74px;
-  height: 74px;
+  width: 62px;
+  height: 62px;
   grid-template-columns: repeat(3, 1fr);
   border: 2px solid #315f57;
   background: #edf5f2;
@@ -178,27 +181,27 @@
 .sudoku-card__grid i:nth-child(3n) { border-right-width: 0; }
 .sudoku-card__grid i:nth-child(n + 7) { border-bottom-width: 0; }
 
-.sudoku-card__copy {
+.game-card__copy {
   display: flex;
   min-width: 0;
   flex-direction: column;
 }
 
-.sudoku-card__copy small {
+.game-card__copy small {
   color: #7a8a84;
   font-size: 8px;
   letter-spacing: 0.1em;
 }
 
-.sudoku-card__copy strong {
+.game-card__copy strong {
   margin-top: 4px;
   color: #244f48;
   font-family: Georgia, "Noto Serif SC", serif;
-  font-size: 22px;
+  font-size: 19px;
   font-weight: 500;
 }
 
-.sudoku-card__copy > span {
+.game-card__copy > span {
   overflow: hidden;
   margin-top: 7px;
   color: #77827f;
@@ -207,7 +210,7 @@
   white-space: nowrap;
 }
 
-.sudoku-card__arrow {
+.game-card__arrow {
   display: grid;
   width: 26px;
   height: 26px;
@@ -217,6 +220,11 @@
   background: var(--color-teal);
   box-shadow: 0 5px 12px rgb(46 117 106 / 20%);
 }
+
+.crossmath-card__grid { display: grid; width: 62px; height: 62px; grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(3, 1fr); place-items: center; padding: 3px; border: 1px solid #58796f; border-radius: 9px; background: #fff8dc; }
+.crossmath-card__grid i { display: grid; width: 15px; height: 15px; place-items: center; border: 1px solid #b8a96f; color: #27685c; background: #fffdf3; font-family: Georgia, serif; font-size: 7px; font-style: normal; }
+.crossmath-card__grid b { color: #4d625d; font-size: 7px; }
+.crossmath-card__grid em { width: 2px; height: 2px; border-radius: 50%; background: #9aaaa4; }
 
 .home-page__footer {
   display: flex;

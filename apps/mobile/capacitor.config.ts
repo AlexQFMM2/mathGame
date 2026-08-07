@@ -1,7 +1,7 @@
 import type {CapacitorConfig} from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.mathgame.app",
+  appId: "com.alexqfmm.mathgame",
   appName: "MathGame",
   webDir: "../web/dist",
   server: {
@@ -10,4 +10,3 @@ const config: CapacitorConfig = {
 };
 
 export default config;
-

@@ -18,14 +18,22 @@ import {
 } from "./activity.ts";
 import {createPendingCheckInTask, restorePendingCheckInTask} from "./checkInTask.ts";
 
-function completeCheckInTask(activity, date, mode = "daily", elapsedSeconds = 60) {
-  return recordCheckInTaskCompletion(
+function completeCheckInTask(activity, date, mode = "daily", elapsedSeconds = 60, completedAt = date) {
+  const withSudoku = recordCheckInTaskCompletion(
     activity,
     formatLocalDateKey(date),
     mode,
     "sudoku",
     elapsedSeconds,
-    date,
+    completedAt,
+  );
+  return recordCheckInTaskCompletion(
+    withSudoku,
+    formatLocalDateKey(date),
+    mode,
+    "crossmath",
+    elapsedSeconds,
+    completedAt,
   );
 }
 
@@ -37,24 +45,46 @@ test("ordinary games update statistics but do not sign in automatically", () => 
   assert.equal(second.days["2026-08-07"].games.sudoku.bestSeconds, 120);
   assert.deepEqual(getDayProgress(second, "2026-08-07"), {
     completedTasks: 1,
-    totalTasks: 1,
+    totalTasks: 2,
     totalGames: 2,
     tasksComplete: true,
     isComplete: false,
     isCheckedIn: false,
     isMakeup: false,
-    tasks: [{gameId: "sudoku", completed: true, completedGames: 2}],
+    tasks: [
+      {gameId: "sudoku", completed: true, completedGames: 2},
+      {gameId: "crossmath", completed: false, completedGames: 0},
+    ],
   });
 });
 
-test("finishing a launched daily task completes the game and signs in", () => {
+test("daily check-in completes after either selected game task", () => {
   const date = new Date(2026, 7, 7, 18);
-  const result = completeCheckInTask(EMPTY_ACTIVITY_RECORD, date);
+  const result = recordCheckInTaskCompletion(
+    EMPTY_ACTIVITY_RECORD,
+    "2026-08-07",
+    "daily",
+    "sudoku",
+    60,
+    date,
+  );
   assert.equal(result.days["2026-08-07"].games.sudoku.completedGames, 1);
+  assert.equal(result.days["2026-08-07"].games.crossmath, undefined);
   assert.deepEqual(result.days["2026-08-07"].checkIn, {recordedAt: date.toISOString()});
   assert.equal(getDayProgress(result, "2026-08-07").tasksComplete, true);
   assert.equal(getDayProgress(result, "2026-08-07").isCheckedIn, true);
   assert.equal(recordCheckInTaskCompletion(result, "2026-08-07", "daily", "sudoku", 30, date), result);
+
+  const crossMathChoice = recordCheckInTaskCompletion(
+    EMPTY_ACTIVITY_RECORD,
+    "2026-08-07",
+    "daily",
+    "crossmath",
+    75,
+    date,
+  );
+  assert.equal(crossMathChoice.days["2026-08-07"].games.sudoku, undefined);
+  assert.equal(getDayProgress(crossMathChoice, "2026-08-07").isCheckedIn, true);
 });
 
 test("daily and makeup task targets reject future or mismatched dates", () => {
@@ -73,7 +103,7 @@ test("daily and makeup task targets reject future or mismatched dates", () => {
   );
 });
 
-test("finishing a launched makeup task records a real game on the selected past date", () => {
+test("makeup confirms the selected past date after either real game task", () => {
   const completedAt = new Date(2026, 7, 7, 18);
   const result = recordCheckInTaskCompletion(
     EMPTY_ACTIVITY_RECORD,
@@ -84,7 +114,7 @@ test("finishing a launched makeup task records a real game on the selected past 
     completedAt,
   );
   assert.deepEqual(result.days["2026-08-06"], {
-    requiredGameIds: ["sudoku"],
+    requiredGameIds: ["sudoku", "crossmath"],
     games: {
       sudoku: {completedGames: 1, bestSeconds: 90, lastCompletedAt: completedAt.toISOString()},
     },
@@ -99,14 +129,7 @@ test("month progress and trophy tier count completed makeup tasks", () => {
   const marchFirst = new Date(2028, 2, 1, 12);
   for (let day = 1; day <= 29; day += 1) {
     activity = day <= 4
-      ? recordCheckInTaskCompletion(
-        activity,
-        `2028-02-${String(day).padStart(2, "0")}`,
-        "makeup",
-        "sudoku",
-        60,
-        marchFirst,
-      )
+      ? completeCheckInTask(activity, new Date(2028, 1, day, 12), "makeup", 60, marchFirst)
       : completeCheckInTask(activity, new Date(2028, 1, day, 12));
   }
   assert.deepEqual(getMonthProgress(activity, 2028, 1), {
@@ -123,14 +146,7 @@ test("trophy remains locked until every day of the month is complete", () => {
   let activity = EMPTY_ACTIVITY_RECORD;
   const completedAt = new Date(2028, 2, 1, 12);
   for (let day = 1; day <= 4; day += 1) {
-    activity = recordCheckInTaskCompletion(
-      activity,
-      `2028-02-${String(day).padStart(2, "0")}`,
-      "makeup",
-      "sudoku",
-      60,
-      completedAt,
-    );
+    activity = completeCheckInTask(activity, new Date(2028, 1, day, 12), "makeup", 60, completedAt);
   }
   assert.deepEqual(getMonthProgress(activity, 2028, 1), {
     completedDays: 4,
@@ -153,7 +169,7 @@ test("trophy tiers use 0-4 gold, 5-14 silver and 15+ bronze", () => {
 test("current streak and profile summary use completed check-in tasks", () => {
   let activity = EMPTY_ACTIVITY_RECORD;
   activity = completeCheckInTask(activity, new Date(2026, 7, 5, 12));
-  activity = recordCheckInTaskCompletion(activity, "2026-08-06", "makeup", "sudoku", 60, new Date(2026, 7, 7, 10));
+  activity = completeCheckInTask(activity, new Date(2026, 7, 6, 12), "makeup", 60, new Date(2026, 7, 7, 10));
   activity = completeCheckInTask(activity, new Date(2026, 7, 7, 12));
   assert.equal(getCurrentStreak(activity, new Date(2026, 7, 7, 23)), 3);
   assert.deepEqual(getActivitySummary(activity, new Date(2026, 7, 7, 23)), {

@@ -1,0 +1,38 @@
+.crossmath-tile-bank {
+  position: relative;
+  z-index: 2;
+  width: 292px;
+  padding: 6px 8px 8px;
+  border: 1px solid rgb(53 104 94 / 14%);
+  border-radius: 14px;
+  background: rgb(255 254 250 / 92%);
+}
+.crossmath-tile-bank header { display: flex; height: 15px; align-items: center; justify-content: space-between; color: #687d77; }
+.crossmath-tile-bank header strong { font-size: 7px; letter-spacing: .08em; }
+.crossmath-tile-bank header small { font-size: 6px; }
+.crossmath-tile-bank > div { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.crossmath-tile-bank--dense > div { grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.crossmath-tile-bank button {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 40px;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #80a89e;
+  border-radius: 9px;
+  color: #146f5d;
+  background: #f1faf6;
+  box-shadow: 0 3px 8px rgb(37 95 83 / 8%);
+  cursor: pointer;
+}
+.crossmath-tile-bank button b { font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
+.crossmath-tile-bank button.crossmath-tile--symbol b { font-size: 18px; font-weight: 800; }
+.crossmath-tile-bank--dense button { height: 35px; border-radius: 8px; }
+.crossmath-tile-bank--dense button b { font-size: 11px; }
+.crossmath-tile-bank--dense button.crossmath-tile--symbol b { font-size: 16px; }
+.crossmath-tile-bank button small { position: absolute; right: 3px; bottom: 2px; font-size: 5px; }
+.crossmath-tile-bank .crossmath-tile--placed { border-style: dashed; border-color: #9ba9a5; color: #71817d; background: #e3e8e6; box-shadow: none; opacity: .72; }
+.crossmath-tile-bank .crossmath-tile--placed small { color: #326c61; font-weight: 800; }
+.crossmath-tile-bank .crossmath-tile--selected { border-color: #d39a2d; color: #735216; background: #fff1bd; box-shadow: 0 0 0 2px rgb(235 186 76 / 24%); transform: translateY(-1px); }

@@ -1,6 +1,6 @@
 # Activity Calendar Plan
 
-> 状态：已完成并归档。2026-08-07 起由 `plan/current/profile-daily-challenge-plan.md` 的按游戏每日任务模型取代；本文保留为首次日历打卡实现记录。
+> 状态：已完成并归档。2026-08-07 起由 `profile-daily-challenge-plan.md` 的按游戏每日任务模型取代；两份文档现均位于 `plan/archive/`，本文保留为首次日历打卡实现记录。
 
 ## 目标
 

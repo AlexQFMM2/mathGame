@@ -10,6 +10,7 @@ interface SudokuBoardProps {
   readonly hintIndex: number | null;
   readonly mistakeIndex: number | null;
   readonly onSelect: (index: number) => void;
+  readonly readOnly?: boolean;
 }
 
 function cellLabel(index: number, value: SudokuValue, given: boolean): string {
@@ -29,12 +30,13 @@ export function SudokuBoard({
   hintIndex,
   mistakeIndex,
   onSelect,
+  readOnly = false,
 }: SudokuBoardProps) {
   const selectedValue = selectedIndex === null ? 0 : values[selectedIndex] ?? 0;
   const peers = selectedIndex === null ? new Set<number>() : new Set(getPeerIndices(selectedIndex));
 
   return (
-    <div className="sudoku-board" role="grid" aria-label="九乘九数独棋盘">
+    <div className={`sudoku-board${readOnly ? " sudoku-board--result" : ""}`} role="grid" aria-label={readOnly ? "已完成的九乘九数独棋盘" : "九乘九数独棋盘"} aria-readonly={readOnly}>
       {values.map((value, index) => {
         const given = puzzle.puzzle[index] !== 0;
         const isSelected = selectedIndex === index;
@@ -48,16 +50,8 @@ export function SudokuBoard({
           mistakeIndex === index ? "sudoku-cell--mistake" : "",
         ].filter(Boolean).join(" ");
 
-        return (
-          <button
-            className={classes}
-            type="button"
-            role="gridcell"
-            aria-selected={isSelected}
-            aria-label={cellLabel(index, value, given)}
-            key={index}
-            onClick={() => onSelect(index)}
-          >
+        const content = (
+          <>
             {value !== 0 ? (
               <span className="sudoku-cell__value">{value}</span>
             ) : (
@@ -68,7 +62,12 @@ export function SudokuBoard({
                 })}
               </span>
             )}
-          </button>
+          </>
+        );
+        return readOnly ? (
+          <span className={classes} role="gridcell" aria-label={cellLabel(index, value, given)} key={index}>{content}</span>
+        ) : (
+          <button className={classes} type="button" role="gridcell" aria-selected={isSelected} aria-label={cellLabel(index, value, given)} key={index} onClick={() => onSelect(index)}>{content}</button>
         );
       })}
     </div>

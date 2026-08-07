@@ -139,7 +139,7 @@ export function getDayProgress(
   );
   const isMakeup = entry?.makeup !== undefined;
   const isCheckedIn = entry?.checkIn !== undefined;
-  const tasksComplete = tasks.length > 0 && completedTasks === tasks.length;
+  const tasksComplete = tasks.length > 0 && completedTasks > 0;
 
   return {
     completedTasks,
@@ -361,6 +361,13 @@ function hasCompletedRequiredGames(day: {
   return day.requiredGameIds.every((gameId) => (day.games[gameId]?.completedGames ?? 0) > 0);
 }
 
+function hasCompletedAnyRequiredGame(day: {
+  readonly requiredGameIds: readonly GameId[];
+  readonly games: Readonly<Partial<Record<GameId, DailyGameActivity>>>;
+}): boolean {
+  return day.requiredGameIds.some((gameId) => (day.games[gameId]?.completedGames ?? 0) > 0);
+}
+
 function latestRequiredGameCompletion(day: {
   readonly requiredGameIds: readonly GameId[];
   readonly games: Readonly<Partial<Record<GameId, DailyGameActivity>>>;
@@ -385,8 +392,8 @@ function normalizeActivityRecord(value: unknown): ActivityRecord | null {
     && (day.makeup === undefined || isValidTimestampRecord(day.makeup))
     && (day.checkIn === undefined || isValidTimestampRecord(day.checkIn))
     && !(day.makeup !== undefined && day.checkIn !== undefined)
-    && (day.checkIn === undefined || hasCompletedRequiredGames(day as unknown as DailyActivity))
-    && (day.makeup === undefined || hasCompletedRequiredGames(day as unknown as DailyActivity))
+    && (day.checkIn === undefined || hasCompletedAnyRequiredGame(day as unknown as DailyActivity))
+    && (day.makeup === undefined || hasCompletedAnyRequiredGame(day as unknown as DailyActivity))
   ));
   return valid ? value as unknown as ActivityRecord : null;
 }
@@ -456,7 +463,7 @@ function migrateDaysToCurrent(
   return Object.fromEntries(Object.entries(days).flatMap(([dateKey, day]) => {
     const tasksComplete = hasCompletedRequiredGames(day);
     if (day.makeup !== undefined) {
-      if (tasksComplete) return [[dateKey, day]];
+      if (hasCompletedAnyRequiredGame(day)) return [[dateKey, day]];
       if (Object.keys(day.games).length === 0) return [];
       const {makeup: _discarded, ...withoutInvalidMakeup} = day;
       return [[dateKey, withoutInvalidMakeup]];
@@ -472,9 +479,9 @@ export function migrateActivityRecordV4(value: unknown): ActivityRecord {
   return {
     schemaVersion: ACTIVITY_SCHEMA_VERSION,
     days: Object.fromEntries(Object.entries(previous.days).flatMap(([dateKey, day]) => {
-      const tasksComplete = hasCompletedRequiredGames(day);
-      if (day.checkIn !== undefined && tasksComplete) return [[dateKey, day]];
-      if (day.makeup !== undefined && tasksComplete) return [[dateKey, day]];
+      const hasCompletedTask = hasCompletedAnyRequiredGame(day);
+      if (day.checkIn !== undefined && hasCompletedTask) return [[dateKey, day]];
+      if (day.makeup !== undefined && hasCompletedTask) return [[dateKey, day]];
       const {checkIn: _checkIn, makeup: _makeup, ...withoutInvalidConfirmation} = day;
       return Object.keys(day.games).length === 0 ? [] : [[dateKey, withoutInvalidConfirmation]];
     })),

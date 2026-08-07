@@ -1,0 +1,8 @@
+.crossmath-variable-panel { position: relative; z-index: 2; display: flex; width: 292px; height: 49px; align-items: center; gap: 7px; }
+.crossmath-variable-panel > small { width: 30px; color: #647b75; font-size: 7px; line-height: 1.2; }
+.crossmath-variable-panel > div { display: grid; flex: 1; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+.crossmath-variable-panel button { display: flex; height: 40px; align-items: center; justify-content: center; gap: 4px; border: 1px solid #a4bdb6; border-radius: 10px; color: #315e56; background: rgb(255 255 255 / 78%); }
+.crossmath-variable-panel i { font-family: Georgia, serif; font-size: 14px; font-weight: 700; }
+.crossmath-variable-panel span { color: #8a9894; font-size: 9px; }
+.crossmath-variable-panel b { min-width: 17px; font-family: Georgia, serif; font-size: 12px; }
+.crossmath-variable-panel .crossmath-variable-panel__hint { border-color: #d59d32; box-shadow: 0 0 0 2px rgb(235 186 76 / 22%); }
