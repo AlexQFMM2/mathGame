@@ -87,6 +87,8 @@ button.crossmath-board__symbol { padding: 0; cursor: pointer; }
   content: "";
 }
 .crossmath-board__symbol--filled { border: 2px solid #075e50; color: #fff; background: #16806e; }
+.crossmath-board__symbol-glyph { display: inline-block; line-height: 1; }
+.crossmath-board__symbol--vertical-comparison .crossmath-board__symbol-glyph { transform: rotate(90deg); }
 
 .crossmath-board__variable {
   border: 2px solid #6d62a8;

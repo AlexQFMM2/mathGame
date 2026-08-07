@@ -110,7 +110,7 @@ export function CrossMathGamePage({initialSession, onExit, onFinish}: CrossMathG
           </button>
           <b>{placedCount}/{session.puzzle.tiles.length} 已放置</b>
         </div>
-        <span>{session.selectedTileId === null ? "以关系符为中心 · 分别计算两侧" : "卡牌已选中，请选择空格"}</span>
+        <span>{session.selectedTileId === null ? "横向左→右 · 纵向上→下" : "卡牌已选中，请选择空格"}</span>
       </div>
       <CrossMathBoard
         puzzle={session.puzzle}

@@ -26,6 +26,17 @@ interface RelationTemplate {
   readonly hintLabel: string;
 }
 
+interface JunctionCandidate {
+  readonly targetRelationId: string;
+  readonly targetTokenIndex: number;
+  readonly incomingTokenIndex: number;
+}
+
+interface JunctionSelection {
+  readonly relationId: string;
+  readonly candidates: readonly JunctionCandidate[];
+}
+
 interface OccupiedToken {
   readonly row: number;
   readonly column: number;
@@ -102,12 +113,12 @@ class ValueSets {
 
 function relationOperatorFor(difficulty: CrossMathDifficulty, index: number, random: () => number): RelationOperator {
   if (difficulty === "starter") return "equal";
-  const equality = difficulty === "easy"
-    ? index % 3 !== 0
+  const comparison = difficulty === "easy"
+    ? index % 3 === 0
     : difficulty === "normal"
-      ? index % 2 === 0
-      : index % 3 === 0;
-  if (equality) return "equal";
+      ? index < 8 && index % 2 === 1
+      : index % 3 === 1;
+  if (!comparison) return "equal";
   const candidates: readonly RelationOperator[] = difficulty === "easy"
     ? ["greater", "less"]
     : ["greater", "less", "greater-or-equal", "less-or-equal"];
@@ -135,29 +146,33 @@ function arithmeticFor(
   return candidates[random() % candidates.length] as ArithmeticOperator;
 }
 
-function generateTemplates(
+function generateEquationSystem(
   difficulty: CrossMathDifficulty,
   routeCount: number,
   seed: number,
 ): readonly RelationTemplate[] {
-  const random = xorshift(seed ^ 0x8f6a_23d1);
   let normalFractionSlots = difficulty === "normal" ? 4 : 0;
   return Array.from({length: routeCount}, (_, index) => {
+    const relationRandom = xorshift(seed ^ Math.imul(index + 1, 0x8f6a_23d1));
+    const shapeRandom = xorshift(seed ^ Math.imul(index + 1, 0x51b7_a82d));
+    const expressionRandom = xorshift(seed ^ Math.imul(index + 1, 0x782f_a04b));
+    const arithmeticRandom = xorshift(seed ^ Math.imul(index + 1, 0x39f2_c04d));
+    const coefficientRandom = xorshift(seed ^ Math.imul(index + 1, 0xd271_39a5));
     const id = `tributary-${index}`;
-    const relation = relationOperatorFor(difficulty, index, random);
+    const relation = relationOperatorFor(difficulty, index, relationRandom);
     const short = difficulty === "hard" && index % 4 === 1 || difficulty === "easy" && index === routeCount - 1;
-    const long = difficulty !== "starter" && (relation !== "equal" && normalFractionSlots > 0 || random() % 3 === 0);
-    const leftOperator = arithmeticFor(difficulty, relation, random);
-    const rightOperator = arithmeticFor(difficulty, relation, random);
+    const long = difficulty !== "starter" && (relation !== "equal" && normalFractionSlots > 0 || shapeRandom() % 3 === 0);
+    const leftOperator = arithmeticFor(difficulty, relation, arithmeticRandom);
+    const rightOperator = arithmeticFor(difficulty, relation, arithmeticRandom);
     const makeCoefficient = () => {
       const fraction = relation !== "equal" && normalFractionSlots > 0;
       if (fraction) normalFractionSlots -= 1;
-      return {kind: "coefficient" as const, value: coefficientFor(difficulty, random, fraction)};
+      return {kind: "coefficient" as const, value: coefficientFor(difficulty, coefficientRandom, fraction)};
     };
     const leftUnknown = {kind: "unknown" as const, occurrenceId: `${id}:left`};
     const rightUnknown = {kind: "unknown" as const, occurrenceId: `${id}:right`};
     const relationToken = {kind: "symbol" as const, symbol: RELATION_SYMBOLS[relation]};
-    const expressionFirst = random() % 2 === 0;
+    const expressionFirst = index === 0 || index > 1 && (expressionRandom() >>> 16) % 2 === 0;
     const tokens: readonly TemplateToken[] = short
       ? [leftUnknown, relationToken, rightUnknown]
       : long
@@ -189,6 +204,31 @@ function generateTemplates(
   });
 }
 
+function selectJunctions(
+  templates: readonly RelationTemplate[],
+  seed: number,
+): readonly JunctionSelection[] {
+  return templates.slice(1).map((template, templateOffset) => {
+    const templateIndex = templateOffset + 1;
+    const incomingTokenIndices = template.tokens
+      .map((token, index) => token.kind === "unknown" ? index : -1)
+      .filter((index) => index >= 0);
+    const candidates = templates.slice(0, templateIndex).flatMap((target) => (
+      target.tokens.flatMap((token, targetTokenIndex) => token.kind === "unknown"
+        ? incomingTokenIndices.map((incomingTokenIndex) => ({
+            targetRelationId: target.id,
+            targetTokenIndex,
+            incomingTokenIndex,
+          }))
+        : [])
+    ));
+    return {
+      relationId: template.id,
+      candidates: shuffle(candidates, seed ^ Math.imul(templateIndex + 1, 0x6c8e_9cf5)),
+    };
+  });
+}
+
 function coordinateKey(row: number, column: number): string {
   return `${row}:${column}`;
 }
@@ -206,8 +246,9 @@ function tokenPosition(
   return axis === "horizontal" ? {row, column: column + index} : {row: row + index, column};
 }
 
-function placeTemplates(
+function buildConstraintMap(
   templates: readonly RelationTemplate[],
+  junctions: readonly JunctionSelection[],
   seed: number,
 ): PlacedConstraintMap | null {
   const occupied = new Map<string, OccupiedToken>();
@@ -263,19 +304,26 @@ function placeTemplates(
     if (layoutVisits > 30_000) return false;
     const template = templates[templateIndex];
     if (template === undefined) return true;
-    const junctions = [...occupied.values()].filter((token) => token.kind === "unknown");
-    const unknownIndices = template.tokens
-      .map((token, index) => token.kind === "unknown" ? index : -1)
-      .filter((index) => index >= 0);
-    const candidates = shuffle(junctions, seed ^ Math.imul(placements.size + 1, 0x9e37_79b1)).flatMap((junction) => (
-      shuffle(unknownIndices, seed ^ junction.row * 31 ^ junction.column * 131).flatMap((unknownIndex) => (
-        shuffle<Axis>(["horizontal", "vertical"], seed ^ unknownIndex * 977).map((axis) => ({
-          row: junction.row - (axis === "vertical" ? unknownIndex : 0),
-          column: junction.column - (axis === "horizontal" ? unknownIndex : 0),
-          axis,
-        }))
-      ))
-    ));
+    const junctionSelection = junctions[templateIndex - 1];
+    if (junctionSelection?.relationId !== template.id) return false;
+    const candidates = junctionSelection.candidates.flatMap((junction) => {
+      const targetPlacement = placements.get(junction.targetRelationId);
+      const targetTemplate = templateById.get(junction.targetRelationId);
+      if (targetPlacement === undefined || targetTemplate === undefined) return [];
+      const targetPosition = tokenPosition(
+        targetPlacement.row,
+        targetPlacement.column,
+        targetPlacement.axis,
+        junction.targetTokenIndex,
+      );
+      return shuffle<Axis>(["horizontal", "vertical"], (
+        seed ^ Math.imul(templateIndex + 1, 977) ^ Math.imul(junction.targetTokenIndex + 1, 131)
+      )).map((axis) => ({
+        row: targetPosition.row - (axis === "vertical" ? junction.incomingTokenIndex : 0),
+        column: targetPosition.column - (axis === "horizontal" ? junction.incomingTokenIndex : 0),
+        axis,
+      }));
+    });
     for (const placement of candidates) {
       if (!canPlace(template, placement.row, placement.column, placement.axis)) continue;
       const occupiedSnapshot = new Map([...occupied].map(([key, token]) => [key, {
@@ -503,8 +551,9 @@ export function generateConstraintMap(
   const maximumAttempts = 96;
   for (let attempt = 0; attempt < maximumAttempts; attempt += 1) {
     const attemptSeed = (seed ^ Math.imul(attempt + 1, 0x9e37_79b1)) >>> 0;
-    const templates = generateTemplates(difficulty, routeCount, attemptSeed);
-    const placed = placeTemplates(templates, attemptSeed);
+    const templates = generateEquationSystem(difficulty, routeCount, attemptSeed);
+    const junctions = selectJunctions(templates, attemptSeed);
+    const placed = buildConstraintMap(templates, junctions, attemptSeed);
     if (placed === null) {
       layoutFailures += 1;
       continue;

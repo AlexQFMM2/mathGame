@@ -26,6 +26,10 @@ export function CrossMathBoard({
   onPlace,
   readOnly = false,
 }: CrossMathBoardProps) {
+  const verticalRelationIds = new Set(puzzle.relations.flatMap((relation) => {
+    const cells = puzzle.cells.filter((cell) => cell.kind !== "blocked" && cell.relationIds.includes(relation.id));
+    return cells.length > 0 && cells.every((cell) => cell.column === cells[0]?.column) ? [relation.id] : [];
+  }));
   const style = {
     "--crossmath-board-columns": puzzle.columns,
     "--crossmath-board-rows": puzzle.rows,
@@ -50,17 +54,22 @@ export function CrossMathBoard({
         if (cell.kind === "symbol") {
           const fixed = cell.fillable !== true;
           const assigned = fixed ? cell.symbol : values.symbols[cell.id];
+          const verticalComparison = assigned !== undefined
+            && [">", "<", "≥", "≤"].includes(assigned)
+            && cell.relationIds.some((relationId) => verticalRelationIds.has(relationId));
           const className = [
             "crossmath-board__symbol",
             fixed ? "crossmath-board__symbol--fixed" : "crossmath-board__symbol--slot",
             !fixed && assigned !== undefined ? "crossmath-board__symbol--filled" : "",
+            verticalComparison ? "crossmath-board__symbol--vertical-comparison" : "",
             mistake ? "crossmath-board__symbol--mistake" : "",
             hinted ? "crossmath-board__symbol--hint" : "",
           ].filter(Boolean).join(" ");
+          const content = assigned === undefined ? "" : <span className="crossmath-board__symbol-glyph">{assigned}</span>;
           return fixed || readOnly ? (
-            <span className={className} style={cellStyle} role="gridcell" aria-label={`固定符号 ${cell.symbol}`} key={cell.id}>{cell.symbol}</span>
+            <span className={className} style={cellStyle} role="gridcell" aria-label={`固定符号 ${cell.symbol}`} key={cell.id}>{content}</span>
           ) : (
-            <button className={className} style={cellStyle} type="button" role="gridcell" data-destination-id={cell.id} aria-label={assigned === undefined ? "空符号格，点击放入所选符号" : `已放置符号 ${assigned}`} key={cell.id} tabIndex={readOnly ? -1 : undefined} onClick={readOnly ? undefined : () => onPlace(cell.id)}>{assigned ?? ""}</button>
+            <button className={className} style={cellStyle} type="button" role="gridcell" data-destination-id={cell.id} aria-label={assigned === undefined ? "空符号格，点击放入所选符号" : `已放置符号 ${assigned}`} key={cell.id} tabIndex={readOnly ? -1 : undefined} onClick={readOnly ? undefined : () => onPlace(cell.id)}>{content}</button>
           );
         }
         if (cell.kind === "variable") {

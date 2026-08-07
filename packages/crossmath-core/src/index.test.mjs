@@ -173,7 +173,10 @@ test("difficulty content includes comparisons, exact fractions and shared variab
   const hard = generateCrossMath("hard", 0);
   assert.ok(starter.relations.every((relation) => relation.operator === "equal"));
   assert.ok(easy.relations.some((relation) => relation.operator === "greater" || relation.operator === "less"));
-  assert.ok(normal.relations.some((relation) => relation.operator !== "equal"));
+  const comparisonCount = (puzzle) => puzzle.relations.filter((relation) => relation.operator !== "equal").length;
+  assert.equal(comparisonCount(easy), 4);
+  assert.equal(comparisonCount(normal), 4);
+  assert.equal(comparisonCount(hard), 5);
   const normalLabels = Object.values(normal.solution.cells).map(formatRational);
   assert.equal(normalLabels.filter((label) => label.includes("/")).length, 4);
   assert.ok(normalLabels.some((label) => label.includes(".")));
@@ -237,6 +240,43 @@ test("relation-centered parsing preserves operand order on both sides", () => {
     assert.equal(evaluateRelation(relation, values), true);
   }
   assert.ok(arithmeticSideCount > 0);
+});
+
+test("vertical comparisons evaluate the top value against the bottom value", () => {
+  const puzzle = {
+    id: "vertical-comparison",
+    difficulty: "easy",
+    seed: 0,
+    rows: 3,
+    columns: 1,
+    cells: [
+      {id: "top", row: 0, column: 0, kind: "value", fixedValue: rational(8), relationIds: ["vertical"]},
+      {id: "comparison", row: 1, column: 0, kind: "symbol", symbol: ">", relationIds: ["vertical"]},
+      {id: "bottom", row: 2, column: 0, kind: "value", fixedValue: rational(4), relationIds: ["vertical"]},
+    ],
+    relations: [{
+      id: "vertical",
+      left: {kind: "cell", cellId: "top"},
+      operator: "greater",
+      right: {kind: "cell", cellId: "bottom"},
+      cellIds: ["top", "bottom"],
+      variableNames: [],
+      hintLabel: "top greater than bottom",
+    }],
+    tiles: [],
+    variableNames: [],
+    knowledgeTags: [],
+    solution: {cells: {top: rational(8), bottom: rational(4)}, variables: {}},
+  };
+  const values = {...puzzle.solution, symbols: {}};
+  const greater = reconstructCrossMathGrid(puzzle, values).relations[0];
+  assert.deepEqual(greater.left, {kind: "cell", cellId: "top"});
+  assert.deepEqual(greater.right, {kind: "cell", cellId: "bottom"});
+  assert.equal(evaluateRelation(greater, values), true);
+
+  puzzle.cells[1].symbol = "<";
+  const less = reconstructCrossMathGrid(puzzle, values).relations[0];
+  assert.equal(evaluateRelation(less, values), false);
 });
 
 test("fillable symbols are judged by their final grid positions instead of their generated positions", () => {

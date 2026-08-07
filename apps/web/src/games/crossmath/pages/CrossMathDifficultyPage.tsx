@@ -13,7 +13,7 @@ const OPTIONS: readonly {
 }[] = [
   {id: "starter", grade: "一年级起步", description: "20 以内加减，逐步进入百以内。", scope: "只使用等号", icon: "leaf"},
   {id: "easy", grade: "一至三年级", description: "百以内四则，比较数的大小。", scope: "＝ ＞ ＜", icon: "compass"},
-  {id: "normal", grade: "三至五年级", description: "分数、小数与四则混合关系。", scope: "加入 ≥ ≤", icon: "lightbulb"},
+  {id: "normal", grade: "三至五年级", description: "分数、小数与四则混合关系。", scope: "少量 ≥ ≤", icon: "lightbulb"},
   {id: "hard", grade: "五至六年级", description: "用多条关系推导 a、b、c。", scope: "共享未知数", icon: "flame"},
 ];
 
