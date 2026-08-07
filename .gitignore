@@ -1,0 +1,22 @@
+node_modules/
+dist/
+coverage/
+.DS_Store
+*.log
+
+# Local environment
+.env
+.env.local
+.env.*.local
+
+# Capacitor / Android generated output
+apps/mobile/android/.gradle/
+apps/mobile/android/app/build/
+apps/mobile/android/build/
+apps/mobile/android/local.properties
+
+# Editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+

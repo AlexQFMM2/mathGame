@@ -1,0 +1,20 @@
+{
+  "name": "math-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "pnpm --filter @math-game/web dev",
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "mobile:sync": "pnpm --filter @math-game/mobile cap:sync",
+    "mobile:open": "pnpm --filter @math-game/mobile cap:open",
+    "mobile:android:debug": "pnpm --filter @math-game/mobile android:debug"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
+

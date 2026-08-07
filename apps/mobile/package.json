@@ -1,0 +1,25 @@
+{
+  "name": "@math-game/mobile",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:web": "pnpm --filter @math-game/web build",
+    "cap:add:android": "cap add android",
+    "cap:sync": "pnpm run build:web && cap sync android",
+    "cap:open": "cap open android",
+    "android:debug": "pnpm run cap:sync && node scripts/run-gradle.mjs assembleDebug",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3"
+  }
+}
+
