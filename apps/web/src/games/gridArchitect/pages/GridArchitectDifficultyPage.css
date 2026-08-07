@@ -1,0 +1,21 @@
+.grid-architect-difficulty-page { position: relative; height: 640px; overflow: hidden; padding: 27px 18px 12px; background: radial-gradient(circle at 91% 6%, rgb(255 255 255 / 58%) 0 46px, transparent 47px), linear-gradient(175deg, #e1eed6 0 150px, var(--color-paper) 151px); }
+.grid-architect-difficulty-page > header { display: flex; align-items: center; gap: 12px; }
+.grid-architect-difficulty-page > header > button { display: grid; width: 42px; height: 42px; place-items: center; border: 0; border-radius: 50%; color: #3f5e3c; background: rgb(255 255 255 / 86%); }
+.grid-architect-difficulty-page > header div { display: flex; flex-direction: column; gap: 1px; }
+.grid-architect-difficulty-page > header small { color: #70856b; font-size: 7px; letter-spacing: .12em; }
+.grid-architect-difficulty-page > header h1 { margin: 0; color: #36593c; font-family: Georgia, "Noto Serif SC", serif; font-size: 22px; font-weight: 500; }
+.grid-architect-difficulty-page__intro { margin: 9px 0 9px 54px; color: #6e806a; font-size: 8px; }
+.grid-architect-difficulty-list { display: flex; flex-direction: column; gap: 6px; }
+.grid-architect-difficulty-card { display: grid; width: 100%; height: 66px; grid-template-columns: 17px 38px 1fr 53px; align-items: center; gap: 7px; padding: 7px 9px; border: 1px solid rgb(65 95 61 / 15%); border-radius: 14px; color: var(--color-ink); background: rgb(255 255 255 / 85%); box-shadow: 0 8px 20px rgb(48 72 44 / 6%); text-align: left; }
+.grid-architect-difficulty-card__number { align-self: start; color: #99a594; font-family: Georgia, serif; font-size: 8px; }
+.grid-architect-difficulty-card__icon { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; color: white; background: linear-gradient(145deg, #a8c398, #789d6e); }
+.grid-architect-difficulty-card--easy .grid-architect-difficulty-card__icon { background: linear-gradient(145deg, #83ad78, #527c4e); }
+.grid-architect-difficulty-card--normal .grid-architect-difficulty-card__icon { background: linear-gradient(145deg, #6d9681, #476f5d); }
+.grid-architect-difficulty-card--hard .grid-architect-difficulty-card__icon { background: linear-gradient(145deg, #8c7454, #624f39); }
+.grid-architect-difficulty-card__copy { display: flex; min-width: 0; flex-direction: column; }
+.grid-architect-difficulty-card__copy small { color: #879383; font-size: 6px; }
+.grid-architect-difficulty-card__copy strong { color: #36593c; font-family: Georgia, "Noto Serif SC", serif; font-size: 14px; font-weight: 500; }
+.grid-architect-difficulty-card__copy span { overflow: hidden; margin-top: 1px; color: #73806f; font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.grid-architect-difficulty-card > b { color: #5c7c55; font-size: 6px; text-align: right; }
+.grid-architect-difficulty-page__note { display: flex; margin: 5px 0 0; align-items: center; justify-content: center; gap: 4px; color: #7d8978; font-size: 7px; }
+.grid-architect-difficulty-page__note .app-icon { color: #62875b; }

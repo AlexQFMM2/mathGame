@@ -1,5 +1,9 @@
 import {generateSudoku} from "@math-game/sudoku-core";
+import {evaluateGeometryPuzzle, generateGridArchitect} from "@math-game/grid-architect-core";
 import type {ReactNode} from "react";
+import {GeometryConditionCards} from "../../gridArchitect/components/GeometryConditionCards";
+import {GridArchitectBoard} from "../../gridArchitect/components/GridArchitectBoard";
+import {GridArchitectResultPage} from "../../gridArchitect/pages/GridArchitectResultPage";
 import {GameToolbar} from "../components/GameToolbar";
 import {NumberPad} from "../components/NumberPad";
 import {SudokuBoard} from "../components/SudokuBoard";
@@ -19,7 +23,11 @@ const firstEmpty = previewValues.findIndex((value) => value === 0);
 const previewNotes = Array(81).fill(0) as number[];
 previewNotes[firstEmpty] = (1 << 2) | (1 << 5) | (1 << 8);
 
-export const SUDOKU_COMPONENT_PREVIEWS: readonly ComponentPreviewEntry[] = [
+const geometryPuzzle = generateGridArchitect("hard", 1);
+const geometrySelection = geometryPuzzle.solution.selectedCellIds.slice(0, 7);
+const geometryEvaluation = evaluateGeometryPuzzle(geometryPuzzle, {selectedCellIds: geometrySelection});
+
+export const COMPONENT_PREVIEWS: readonly ComponentPreviewEntry[] = [
   {
     id: "board",
     title: "SudokuBoard",
@@ -69,6 +77,47 @@ export const SUDOKU_COMPONENT_PREVIEWS: readonly ComponentPreviewEntry[] = [
           puzzleId: previewPuzzle.id,
           puzzle: previewPuzzle,
           values: previewPuzzle.solution,
+        }}
+        onHome={() => undefined}
+        onNewGame={() => undefined}
+      />
+    ),
+  },
+  {
+    id: "geometry-board",
+    title: "GridArchitectBoard",
+    description: "建造、地标、障碍、边界、中心点、提示与冲突状态。",
+    render: () => (
+      <GridArchitectBoard
+        puzzle={geometryPuzzle}
+        selectedCellIds={geometrySelection}
+        conditionResults={geometryEvaluation.conditionResults}
+        hintCellId={geometryPuzzle.solution.selectedCellIds[7] ?? null}
+        onToggle={() => undefined}
+      />
+    ),
+  },
+  {
+    id: "geometry-conditions",
+    title: "GeometryConditionCards",
+    description: "待完成、成立和冲突条件的组合状态。",
+    render: () => <GeometryConditionCards puzzle={geometryPuzzle} results={geometryEvaluation.conditionResults} checked />,
+  },
+  {
+    id: "geometry-result",
+    title: "Grid architect result",
+    description: "完成建筑、统计与可分享题号。",
+    fullscreen: true,
+    render: () => (
+      <GridArchitectResultPage
+        result={{
+          difficulty: geometryPuzzle.difficulty,
+          elapsedSeconds: 188,
+          errors: 1,
+          hints: 1,
+          puzzleId: geometryPuzzle.id,
+          puzzle: geometryPuzzle,
+          selectedCellIds: geometryPuzzle.solution.selectedCellIds,
         }}
         onHome={() => undefined}
         onNewGame={() => undefined}

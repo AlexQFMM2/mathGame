@@ -4,11 +4,13 @@
 
 ## Current
 
-- [`current/arithmetic-crossword-mvp-plan.md`](current/arithmetic-crossword-mvp-plan.md)：第二款游戏“算术填字”，包含四档难度、关系符和变量推导。
+当前没有进行中的模块计划。
 
 ## Archive
 
 - [`archive/sudoku-mvp-plan.md`](archive/sudoku-mvp-plan.md)：已完成并结束的 Web 数独 MVP；Android 发布范围留待独立计划。
+- [`archive/arithmetic-crossword-mvp-plan.md`](archive/arithmetic-crossword-mvp-plan.md)：已完成的算术填字四档难度、关系符与变量推导。
+- [`archive/grid-architect-mvp-plan.md`](archive/grid-architect-mvp-plan.md)：已完成的格点建筑师离散几何构造、四档难度、独立求解和活动接入。
 - [`archive/profile-daily-challenge-plan.md`](archive/profile-daily-challenge-plan.md)：已完成的每日任务、个人中心和题目编号复制/复现。
 - [`archive/activity-calendar-plan.md`](archive/activity-calendar-plan.md)：已被当前每日任务方案取代的早期活动日历计划。
 

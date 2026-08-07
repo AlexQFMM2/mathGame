@@ -1,0 +1,9 @@
+.grid-architect-seed-card { margin-top: 7px; padding: 8px 10px 7px; border: 1px solid rgb(76 104 70 / 16%); border-radius: 13px; background: rgb(255 255 255 / 70%); }
+.grid-architect-seed-card header { display: flex; align-items: center; gap: 6px; }
+.grid-architect-seed-card header span { display: grid; width: 22px; height: 22px; place-items: center; border-radius: 7px; color: white; background: #6d9566; }
+.grid-architect-seed-card label { color: #4b6447; font-size: 8px; font-weight: 700; }
+.grid-architect-seed-card > div { display: grid; grid-template-columns: 1fr 51px; gap: 6px; margin-top: 6px; }
+.grid-architect-seed-card input { min-width: 0; height: 31px; padding: 0 9px; border: 1px solid #b9c9b5; border-radius: 9px; color: #36523b; background: #fff; font-family: ui-monospace, monospace; font-size: 9px; text-transform: uppercase; }
+.grid-architect-seed-card button { height: 31px; border: 0; border-radius: 9px; color: white; background: #5f895a; font-size: 8px; font-weight: 700; }
+.grid-architect-seed-card p { min-height: 8px; margin: 4px 1px 0; color: #81907d; font-size: 6px; }
+.grid-architect-seed-card p.grid-architect-seed-card__message { color: #9a543d; }

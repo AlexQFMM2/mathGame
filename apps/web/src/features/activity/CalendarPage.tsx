@@ -46,7 +46,10 @@ export function CalendarPage({activity, onStartCheckInTask}: CalendarPageProps) 
   }), [leadingBlanks, progress.totalDays]);
   const isCurrentMonth = year === today.getFullYear() && monthIndex === today.getMonth();
   const selectedProgress = selectedDateKey === null ? null : getDayProgress(activity, selectedDateKey);
-  const availableGames = GAME_CATALOG.filter((game) => game.status === "available");
+  const selectedTaskIds = new Set(selectedProgress?.tasks.map((task) => task.gameId) ?? []);
+  const availableGames = GAME_CATALOG.filter((game) => (
+    game.status === "available" && (selectedProgress === null || selectedTaskIds.has(game.id))
+  ));
   const percentage = Math.round((progress.completedDays / progress.totalDays) * 100);
   const trophyClassName = progress.trophyTier === null
     ? "monthly-trophy monthly-trophy--locked"

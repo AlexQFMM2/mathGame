@@ -45,7 +45,7 @@ test("ordinary games update statistics but do not sign in automatically", () => 
   assert.equal(second.days["2026-08-07"].games.sudoku.bestSeconds, 120);
   assert.deepEqual(getDayProgress(second, "2026-08-07"), {
     completedTasks: 1,
-    totalTasks: 2,
+    totalTasks: 3,
     totalGames: 2,
     tasksComplete: true,
     isComplete: false,
@@ -54,6 +54,7 @@ test("ordinary games update statistics but do not sign in automatically", () => 
     tasks: [
       {gameId: "sudoku", completed: true, completedGames: 2},
       {gameId: "crossmath", completed: false, completedGames: 0},
+      {gameId: "grid-architect", completed: false, completedGames: 0},
     ],
   });
 });
@@ -85,6 +86,17 @@ test("daily check-in completes after either selected game task", () => {
   );
   assert.equal(crossMathChoice.days["2026-08-07"].games.sudoku, undefined);
   assert.equal(getDayProgress(crossMathChoice, "2026-08-07").isCheckedIn, true);
+
+  const geometryChoice = recordCheckInTaskCompletion(
+    EMPTY_ACTIVITY_RECORD,
+    "2026-08-07",
+    "daily",
+    "grid-architect",
+    82,
+    date,
+  );
+  assert.equal(geometryChoice.days["2026-08-07"].games["grid-architect"].completedGames, 1);
+  assert.equal(getDayProgress(geometryChoice, "2026-08-07").isCheckedIn, true);
 });
 
 test("daily and makeup task targets reject future or mismatched dates", () => {
@@ -114,7 +126,7 @@ test("makeup confirms the selected past date after either real game task", () =>
     completedAt,
   );
   assert.deepEqual(result.days["2026-08-06"], {
-    requiredGameIds: ["sudoku", "crossmath"],
+    requiredGameIds: ["sudoku", "crossmath", "grid-architect"],
     games: {
       sudoku: {completedGames: 1, bestSeconds: 90, lastCompletedAt: completedAt.toISOString()},
     },

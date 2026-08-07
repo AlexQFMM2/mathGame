@@ -1,0 +1,4 @@
+.grid-architect-toolbar { display: grid; width: 292px; height: 43px; grid-template-columns: 48px 48px 48px 1fr; gap: 5px; }
+.grid-architect-toolbar button { display: flex; min-width: 0; height: 43px; align-items: center; flex-direction: column; justify-content: center; gap: 2px; border: 1px solid rgb(74 104 68 / 17%); border-radius: 10px; color: #577052; background: rgb(255 255 255 / 78%); font-size: 6px; font-weight: 700; }
+.grid-architect-toolbar button:disabled { opacity: .38; }
+.grid-architect-toolbar .grid-architect-toolbar__check { flex-direction: row; gap: 5px; border-color: transparent; color: white; background: #5f8759; font-size: 8px; box-shadow: 0 6px 15px rgb(70 111 64 / 20%); }

@@ -1,11 +1,11 @@
 import {useState} from "react";
-import {SUDOKU_COMPONENT_PREVIEWS} from "./previewRegistry";
+import {COMPONENT_PREVIEWS} from "./previewRegistry";
 import "./ComponentPreviewPage.css";
 
 export function ComponentPreviewPage() {
-  const [selectedId, setSelectedId] = useState(SUDOKU_COMPONENT_PREVIEWS[0]?.id ?? "");
-  const selected = SUDOKU_COMPONENT_PREVIEWS.find((preview) => preview.id === selectedId)
-    ?? SUDOKU_COMPONENT_PREVIEWS[0];
+  const [selectedId, setSelectedId] = useState(COMPONENT_PREVIEWS[0]?.id ?? "");
+  const selected = COMPONENT_PREVIEWS.find((preview) => preview.id === selectedId)
+    ?? COMPONENT_PREVIEWS[0];
 
   return (
     <section className={`component-preview${selected?.fullscreen ? " component-preview--fullscreen" : ""}`}>
@@ -13,7 +13,7 @@ export function ComponentPreviewPage() {
         <small>DEV ONLY</small>
         <h1>组件预览</h1>
         <select value={selectedId} onChange={(event) => setSelectedId(event.target.value)}>
-          {SUDOKU_COMPONENT_PREVIEWS.map((preview) => (
+          {COMPONENT_PREVIEWS.map((preview) => (
             <option value={preview.id} key={preview.id}>{preview.title}</option>
           ))}
         </select>

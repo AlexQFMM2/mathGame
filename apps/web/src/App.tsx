@@ -5,6 +5,11 @@ import {
 } from "@math-game/crossmath-core";
 import type {GameId} from "@math-game/game-core";
 import {
+  generateGridArchitect,
+  type GridArchitectChallengeReference,
+  type GridArchitectDifficulty,
+} from "@math-game/grid-architect-core";
+import {
   generateSudoku,
   type SudokuChallengeReference,
   type SudokuDifficulty,
@@ -45,6 +50,17 @@ import {
   type CrossMathSession,
   type SavedCrossMathGame,
 } from "./games/crossmath/state/session";
+import {GridArchitectDifficultyPage} from "./games/gridArchitect/pages/GridArchitectDifficultyPage";
+import {GridArchitectGamePage} from "./games/gridArchitect/pages/GridArchitectGamePage";
+import {GridArchitectGeneratingPage} from "./games/gridArchitect/pages/GridArchitectGeneratingPage";
+import {GridArchitectResultPage, type GridArchitectGameResult} from "./games/gridArchitect/pages/GridArchitectResultPage";
+import {
+  GRID_ARCHITECT_SAVE_KEY,
+  createGridArchitectSession,
+  restoreSavedGridArchitectGame,
+  type GridArchitectSession,
+  type SavedGridArchitectGame,
+} from "./games/gridArchitect/state/session";
 import {DifficultyPage} from "./games/sudoku/pages/DifficultyPage";
 import {GeneratingPage} from "./games/sudoku/pages/GeneratingPage";
 import {HomePage} from "./games/sudoku/pages/HomePage";
@@ -78,6 +94,10 @@ type AppScreen =
   | {readonly name: "crossmath-generating"; readonly difficulty: CrossMathDifficulty; readonly seed: number}
   | {readonly name: "crossmath-game"; readonly initialSession: CrossMathSession}
   | {readonly name: "crossmath-result"; readonly result: CrossMathGameResult; readonly checkInStatus?: string}
+  | {readonly name: "grid-architect-difficulty"}
+  | {readonly name: "grid-architect-generating"; readonly difficulty: GridArchitectDifficulty; readonly seed: number}
+  | {readonly name: "grid-architect-game"; readonly initialSession: GridArchitectSession}
+  | {readonly name: "grid-architect-result"; readonly result: GridArchitectGameResult; readonly checkInStatus?: string}
   | {readonly name: "generation-error"; readonly gameId: GameId; readonly message: string};
 
 function createSeed(): number {
@@ -88,6 +108,7 @@ export function App() {
   const [screen, setScreen] = useState<AppScreen>({name: "home"});
   const [savedSudokuGame, setSavedSudokuGame] = useState<SavedSudokuGame | null>(null);
   const [savedCrossMathGame, setSavedCrossMathGame] = useState<SavedCrossMathGame | null>(null);
+  const [savedGridArchitectGame, setSavedGridArchitectGame] = useState<SavedGridArchitectGame | null>(null);
   const [activity, setActivity] = useState<ActivityRecord>(EMPTY_ACTIVITY_RECORD);
   const [pendingCheckInTask, setPendingCheckInTask] = useState<PendingCheckInTask | null>(null);
 
@@ -95,6 +116,7 @@ export function App() {
     void Promise.all([
       localSaveStore.load(SUDOKU_SAVE_KEY),
       localSaveStore.load(CROSSMATH_SAVE_KEY),
+      localSaveStore.load(GRID_ARCHITECT_SAVE_KEY),
       localSaveStore.load(PENDING_CHECK_IN_TASK_SAVE_KEY),
       localSaveStore.has(ACTIVITY_SAVE_KEY),
       localSaveStore.load(ACTIVITY_SAVE_KEY),
@@ -108,6 +130,7 @@ export function App() {
     ]).then(([
       sudokuSaveValue,
       crossMathSaveValue,
+      gridArchitectSaveValue,
       pendingTaskValue,
       activityExists,
       activityValue,
@@ -121,13 +144,17 @@ export function App() {
     ]) => {
       const restoredSudoku = restoreSavedGame(sudokuSaveValue);
       const restoredCrossMath = restoreSavedCrossMathGame(crossMathSaveValue);
+      const restoredGridArchitect = restoreSavedGridArchitectGame(gridArchitectSaveValue);
       const restoredPendingTask = restorePendingCheckInTask(pendingTaskValue);
       setSavedSudokuGame(restoredSudoku);
       setSavedCrossMathGame(restoredCrossMath);
+      setSavedGridArchitectGame(restoredGridArchitect);
       const pendingHasGame = restoredPendingTask?.gameId === "sudoku"
         ? restoredSudoku !== null
         : restoredPendingTask?.gameId === "crossmath"
           ? restoredCrossMath !== null
+          : restoredPendingTask?.gameId === "grid-architect"
+            ? restoredGridArchitect !== null
           : false;
       setPendingCheckInTask(pendingHasGame ? restoredPendingTask : null);
       if (!pendingHasGame && restoredPendingTask !== null) {
@@ -187,13 +214,32 @@ export function App() {
     }, 80);
   };
 
+  const prepareGridArchitect = (
+    difficulty: GridArchitectDifficulty,
+    seed: number,
+    checkInTask: PendingCheckInTask | null = null,
+  ) => {
+    savePendingTask(checkInTask);
+    setScreen({name: "grid-architect-generating", difficulty, seed});
+    window.setTimeout(() => {
+      try {
+        setScreen({name: "grid-architect-game", initialSession: createGridArchitectSession(generateGridArchitect(difficulty, seed))});
+      } catch {
+        savePendingTask(null);
+        setScreen({name: "generation-error", gameId: "grid-architect", message: "这次格点地图没有生成成功，请重新选择难度。"});
+      }
+    }, 80);
+  };
+
   const goHome = () => {
     void Promise.all([
       localSaveStore.load(SUDOKU_SAVE_KEY),
       localSaveStore.load(CROSSMATH_SAVE_KEY),
-    ]).then(([sudokuValue, crossMathValue]) => {
+      localSaveStore.load(GRID_ARCHITECT_SAVE_KEY),
+    ]).then(([sudokuValue, crossMathValue, gridArchitectValue]) => {
       setSavedSudokuGame(restoreSavedGame(sudokuValue));
       setSavedCrossMathGame(restoreSavedCrossMathGame(crossMathValue));
+      setSavedGridArchitectGame(restoreSavedGridArchitectGame(gridArchitectValue));
       setScreen({name: "home"});
     });
   };
@@ -243,13 +289,18 @@ export function App() {
         <HomePage
           savedSudokuGame={savedSudokuGame}
           savedCrossMathGame={savedCrossMathGame}
+          savedGridArchitectGame={savedGridArchitectGame}
           onChooseSudoku={() => setScreen({name: "sudoku-difficulty"})}
           onChooseCrossMath={() => setScreen({name: "crossmath-difficulty"})}
+          onChooseGridArchitect={() => setScreen({name: "grid-architect-difficulty"})}
           onResumeSudoku={() => {
             if (savedSudokuGame !== null) setScreen({name: "sudoku-game", initialSession: savedSudokuGame.session});
           }}
           onResumeCrossMath={() => {
             if (savedCrossMathGame !== null) setScreen({name: "crossmath-game", initialSession: savedCrossMathGame.session});
+          }}
+          onResumeGridArchitect={() => {
+            if (savedGridArchitectGame !== null) setScreen({name: "grid-architect-game", initialSession: savedGridArchitectGame.session});
           }}
         />
       )}
@@ -257,7 +308,8 @@ export function App() {
         <CalendarPage activity={activity} onStartCheckInTask={(dateKey, mode, gameId) => {
           const task = createPendingCheckInTask(dateKey, mode, gameId);
           if (gameId === "sudoku") prepareSudoku("medium", createSeed(), task);
-          else prepareCrossMath("easy", createSeed(), task);
+          else if (gameId === "crossmath") prepareCrossMath("easy", createSeed(), task);
+          else prepareGridArchitect("easy", createSeed(), task);
         }} />
       )}
       {screen.name === "profile" && <ProfilePage activity={activity} />}
@@ -300,10 +352,30 @@ export function App() {
         <CrossMathResultPage result={screen.result} checkInStatus={screen.checkInStatus} onHome={() => setScreen({name: "home"})} onNewGame={() => setScreen({name: "crossmath-difficulty"})} />
       )}
 
+      {screen.name === "grid-architect-difficulty" && (
+        <GridArchitectDifficultyPage
+          hasSavedGame={savedGridArchitectGame !== null}
+          onBack={() => setScreen({name: "home"})}
+          onSelect={(difficulty) => prepareGridArchitect(difficulty, createSeed())}
+          onStartChallenge={(reference: GridArchitectChallengeReference) => prepareGridArchitect(reference.difficulty, reference.seed)}
+        />
+      )}
+      {screen.name === "grid-architect-generating" && <GridArchitectGeneratingPage difficulty={screen.difficulty} />}
+      {screen.name === "grid-architect-game" && (
+        <GridArchitectGamePage key={screen.initialSession.puzzle.id} initialSession={screen.initialSession} onExit={goHome} onFinish={(result) => {
+          setSavedGridArchitectGame(null);
+          setScreen({name: "grid-architect-result", result, checkInStatus: completeActivity("grid-architect", result.elapsedSeconds)});
+        }} />
+      )}
+      {screen.name === "grid-architect-result" && (
+        <GridArchitectResultPage result={screen.result} checkInStatus={screen.checkInStatus} onHome={() => setScreen({name: "home"})} onNewGame={() => setScreen({name: "grid-architect-difficulty"})} />
+      )}
+
       {screen.name === "generation-error" && (
         <GenerationErrorPage message={screen.message} onBack={() => {
           if (screen.gameId === "sudoku") setScreen({name: "sudoku-difficulty"});
-          else setScreen({name: "crossmath-difficulty"});
+          else if (screen.gameId === "crossmath") setScreen({name: "crossmath-difficulty"});
+          else setScreen({name: "grid-architect-difficulty"});
         }} />
       )}
       {(screen.name === "home" || screen.name === "calendar" || screen.name === "profile") && (

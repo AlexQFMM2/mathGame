@@ -42,6 +42,9 @@ importers:
       '@math-game/game-core':
         specifier: workspace:*
         version: link:../../packages/game-core
+      '@math-game/grid-architect-core':
+        specifier: workspace:*
+        version: link:../../packages/grid-architect-core
       '@math-game/sudoku-core':
         specifier: workspace:*
         version: link:../../packages/sudoku-core
@@ -75,6 +78,12 @@ importers:
         version: 5.9.3
 
   packages/game-core:
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/grid-architect-core:
     devDependencies:
       typescript:
         specifier: ^5.9.3

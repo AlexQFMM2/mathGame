@@ -40,6 +40,9 @@
   z-index: 1;
 }
 
+.home-page__header,
+.home-page__footer { flex: 0 0 auto; }
+
 .home-page__header p {
   margin: 0 0 8px;
   color: #77857e;
@@ -66,7 +69,12 @@
 }
 
 .home-page__content {
-  margin-top: 26px;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  margin-top: 18px;
+  padding: 1px 1px 8px;
+  scrollbar-width: thin;
 }
 
 .home-page__section-title {
@@ -225,6 +233,9 @@
 .crossmath-card__grid i { display: grid; width: 15px; height: 15px; place-items: center; border: 1px solid #b8a96f; color: #27685c; background: #fffdf3; font-family: Georgia, serif; font-size: 7px; font-style: normal; }
 .crossmath-card__grid b { color: #4d625d; font-size: 7px; }
 .crossmath-card__grid em { width: 2px; height: 2px; border-radius: 50%; background: #9aaaa4; }
+.grid-architect-card__grid { display: grid; width: 62px; height: 62px; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 1px; padding: 4px; border: 1px solid #75836e; border-radius: 9px; background: #e4eadc; }
+.grid-architect-card__grid i { display: grid; place-items: center; border: 1px solid rgb(102 124 94 / 25%); border-radius: 2px; color: #8b651c; background: #faf7e7; font-size: 7px; font-style: normal; }
+.grid-architect-card__grid i.built { border-color: #50734d; background: #7fa174; }.grid-architect-card__grid i.landmark { background: #f5d97f; }.grid-architect-card__grid i.obstacle { border-style: dashed; background: #a8aba3; }
 
 .home-page__footer {
   display: flex;

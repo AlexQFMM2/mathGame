@@ -1,0 +1,13 @@
+.grid-architect-generating-page { display: flex; height: 640px; align-items: center; flex-direction: column; justify-content: center; background: radial-gradient(circle at 14% 14%, rgb(255 255 255 / 42%) 0 42px, transparent 43px), #e0ecd7; }
+.grid-architect-generating-page__map { display: grid; width: 148px; height: 148px; grid-template-columns: repeat(5, 24px); grid-template-rows: repeat(5, 24px); place-content: center; gap: 2px; border: 1px solid rgb(71 102 65 / 18%); border-radius: 18px; background: rgb(255 255 255 / 82%); box-shadow: 0 14px 34px rgb(50 79 46 / 14%); animation: grid-architect-generating-float 1.7s ease-in-out infinite alternate; }
+.grid-architect-generating-page__map i { border: 1px solid #ccd8c6; border-radius: 5px; background: #f7f8ed; }
+.grid-architect-generating-page__map i.built { border-color: #527b53; background: #7fac74; box-shadow: inset 0 0 0 2px rgb(255 255 255 / 25%); }
+.grid-architect-generating-page__map i.landmark { background: #f3d47a; }
+.grid-architect-generating-page__map i.obstacle { border-style: dashed; background: #a8aaa1; }
+.grid-architect-generating-page small { margin-top: 25px; color: #5d7956; font-size: 8px; font-weight: 700; letter-spacing: .16em; }
+.grid-architect-generating-page h1 { margin: 6px 0 0; color: #36593c; font-family: Georgia, "Noto Serif SC", serif; font-size: 24px; font-weight: 500; }
+.grid-architect-generating-page p { margin: 10px 0 0; color: #65785f; font-size: 9px; }
+.grid-architect-generating-page__progress { width: 118px; height: 3px; margin-top: 18px; overflow: hidden; border-radius: 99px; background: rgb(255 255 255 / 55%); }
+.grid-architect-generating-page__progress i { display: block; width: 54%; height: 100%; border-radius: inherit; background: #64895c; animation: grid-architect-generating-progress .7s ease-in-out infinite alternate; }
+@keyframes grid-architect-generating-float { to { transform: translateY(-5px); } }
+@keyframes grid-architect-generating-progress { from { transform: translateX(-80%); } to { transform: translateX(160%); } }
