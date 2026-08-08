@@ -123,6 +123,8 @@ pnpm mobile:android:debug
 
 Android 原生工程已纳入仓库并锁定竖屏，应用 ID 为 `com.alexqfmm.mathgame`。推送 `v*` tag 会触发 GitHub Actions 构建 debug-signed 可安装 APK，并发布为 GitHub prerelease；应用商店发布前仍需另行配置私密的正式签名。
 
+当前 Android 预览版：[`v0.1.1`](https://github.com/AlexQFMM2/mathGame/releases/tag/v0.1.1)，安装包由 GitHub Actions 构建并附带 SHA256 校验文件。
+
 ## 产品原则
 
 - 离线优先：核心玩法、题目和存档不依赖服务器。

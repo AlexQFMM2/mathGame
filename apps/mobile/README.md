@@ -24,9 +24,13 @@ pnpm mobile:android:debug
 
 GitHub Release 使用与 Pokémon 项目相同的首发策略：显式推送 `v*` tag 后，由 `.github/workflows/release-android.yml` 构建 debug-signed 可安装 APK，并作为 prerelease 资产发布。当前应用 ID 为 `com.alexqfmm.mathgame`，原生工程锁定 portrait。
 
+发布前同步根包、移动端和 Android `versionName/versionCode`，并新增对应的 `docs/release-notes-vX.Y.Z.md`。确认 `main` 已推送后使用带说明的标签触发发布：
+
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+VERSION=0.1.1
+git tag -a "v${VERSION}" -m "MathGame Android v${VERSION}"
+git push origin main
+git push origin "v${VERSION}"
 ```
 
 debug 签名只用于当前直接安装测试；正式上架或需要长期覆盖升级前，必须配置独立 release signing，不能把密钥提交到仓库。

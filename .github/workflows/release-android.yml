@@ -73,10 +73,19 @@ jobs:
           RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           package_version="$(node -p "require('./package.json').version")"
-          mobile_version="$(node -p "require('./apps/mobile/package.json').version")"
           android_version="$(sed -n 's/.*versionName "\([^"]*\)".*/\1/p' apps/mobile/android/app/build.gradle)"
           test "${package_version}" = "${RELEASE_VERSION}"
-          test "${mobile_version}" = "${RELEASE_VERSION}"
+          for manifest in \
+            apps/mobile/package.json \
+            apps/web/package.json \
+            packages/game-core/package.json \
+            packages/sudoku-core/package.json \
+            packages/crossmath-core/package.json \
+            packages/grid-architect-core/package.json
+          do
+            manifest_version="$(node -p "require('./${manifest}').version")"
+            test "${manifest_version}" = "${RELEASE_VERSION}"
+          done
           test "${android_version}" = "${RELEASE_VERSION}"
           test -f "docs/release-notes-v${RELEASE_VERSION}.md"
 
